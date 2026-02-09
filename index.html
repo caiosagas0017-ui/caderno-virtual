@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caderno Inteligente</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Nunito:wght@400;600;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Fontes */
+        .font-serif { font-family: 'Merriweather', serif; }
+        .font-sans { font-family: 'Nunito', sans-serif; }
+        .font-handwriting { font-family: 'Caveat', cursive; }
+
+        /* Scrollbar Personalizada */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(203, 213, 225, 0.4);
+            border-radius: 20px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(203, 213, 225, 0.7);
+        }
+
+        /* Classes utilitárias para esconder scrollbar mas manter funcionalidade */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-[#f0f2f5] font-sans text-slate-600 overflow-hidden h-screen w-full flex">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-full md:w-80 flex-shrink-0 flex flex-col border-r border-slate-200 bg-white shadow-xl md:shadow-none z-20 h-full absolute md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+        
+        <!-- Header Sidebar -->
+        <div class="p-6 pb-4">
+            <div class="flex items-center gap-3 mb-6">
+                <div id="sidebar-icon-container" class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-sm transform -rotate-3 transition-all duration-500">
+                    <span id="app-icon">🌸</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-serif font-bold text-slate-700 tracking-tight leading-none">Caderno</h1>
+                    <span class="text-xs text-slate-400 font-medium tracking-widest uppercase">Inteligente</span>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="relative mb-4">
+                <i data-lucide="search" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i>
+                <input type="text" id="search-input" placeholder="Procurar..." 
+                    class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-none rounded-xl text-sm text-slate-600 placeholder-slate-400 focus:ring-2 focus:ring-rose-200 transition-all outline-none">
+            </div>
+
+            <button onclick="app.addNote()" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-slate-200 hover:shadow-lg hover:shadow-slate-300 transform hover:-translate-y-0.5 active:translate-y-0">
+                <i data-lucide="plus" class="w-5 h-5"></i>
+                <span class="font-medium">Nova Página</span>
+            </button>
+        </div>
+
+        <!-- Lista de Notas -->
+        <div id="notes-list" class="flex-1 overflow-y-auto px-4 pb-4 space-y-2 custom-scrollbar">
+            <!-- As notas serão inseridas aqui via JS -->
+        </div>
+    </aside>
+
+    <!-- Área Principal -->
+    <main class="flex-1 flex flex-col h-full relative w-full overflow-hidden">
+        
+        <!-- Mobile Header Toggle -->
+        <div class="md:hidden p-4 flex items-center gap-3 bg-white shadow-sm z-10">
+            <button onclick="app.toggleSidebar()" class="text-slate-500">
+                <i data-lucide="more-vertical" class="w-6 h-6"></i>
+            </button>
+            <span class="font-serif font-bold text-slate-700">Meu Caderno</span>
+        </div>
+
+        <!-- Container Vazio (Sem nota selecionada) -->
+        <div id="empty-state" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center opacity-50 h-full">
+            <i data-lucide="book-heart" class="w-32 h-32 mb-6 text-slate-300"></i>
+            <h2 class="text-2xl font-serif text-slate-500 mb-2">Abra o seu caderno</h2>
+            <p class="text-slate-400">Escolha uma página ao lado para começar a escrever.</p>
+        </div>
+
+        <!-- Editor Container -->
+        <div id="editor-container" class="flex-1 flex flex-col h-full max-w-5xl mx-auto w-full p-2 md:p-6 lg:p-8">
+            
+            <!-- Folha de Papel -->
+            <div id="paper-sheet" class="flex-1 flex flex-col bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-visible transition-all duration-500 border-l-[12px] relative">
+                
+                <!-- Toolbar -->
+                <div id="toolbar" class="px-4 md:px-8 py-4 flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 rounded-tr-3xl bg-white/50 backdrop-blur-sm z-20 sticky top-0">
+                    
+                    <div class="flex items-center gap-3">
+                        <div id="toolbar-icon-bg" class="w-8 h-8 rounded-full flex items-center justify-center text-lg shadow-inner">
+                            <span id="toolbar-icon">🌸</span>
+                        </div>
+                        <div class="hidden sm:block h-4 w-px bg-slate-200"></div>
+                        <span id="paper-label" class="hidden sm:block text-xs font-bold uppercase tracking-wider text-slate-400">Padrão</span>
+                        <span class="text-slate-300 hidden sm:block">|</span>
+                        <div class="flex items-center gap-2 text-xs text-slate-400">
+                            <i data-lucide="calendar" class="w-3 h-3"></i>
+                            <span id="last-updated">Hoje</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <!-- Menu Personalizar -->
+                        <div class="relative">
+                            <button onclick="app.toggleAppearanceMenu()" id="btn-personalizar" class="px-3 py-2 rounded-xl transition-all flex items-center gap-2 text-sm font-medium text-slate-500 hover:bg-slate-50">
+                                <i data-lucide="palette" class="w-4 h-4"></i>
+                                <span class="hidden sm:inline">Personalizar</span>
+                            </button>
+                            
+                            <!-- Popover Menu -->
+                            <div id="appearance-menu" class="hidden absolute right-0 top-full mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 p-5 z-50 animate-in fade-in slide-in-from-top-2">
+                                <!-- Preenchido via JS -->
+                            </div>
+                        </div>
+
+                        <div class="h-6 w-px bg-slate-200 mx-1"></div>
+
+                        <button onclick="app.toggleViewMode()" id="btn-view-mode" class="p-2 rounded-xl transition-all bg-slate-800 text-white shadow-lg shadow-slate-200">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Área de Conteúdo -->
+                <div class="flex-1 overflow-y-auto relative custom-scrollbar">
+                    
+                    <!-- Linha Vertical Rosa (Margem) -->
+                    <div id="margin-line" class="absolute left-8 md:left-14 top-0 bottom-0 w-px bg-rose-300/40 z-0 h-full pointer-events-none"></div>
+
+                    <div class="max-w-4xl mx-auto min-h-full flex flex-col relative z-10">
+                        
+                        <!-- Cabeçalho Nota -->
+                        <div class="px-8 md:px-16 pt-8 pb-4">
+                            <input type="text" id="note-title" placeholder="Título..." class="w-full text-4xl font-bold bg-transparent border-none focus:ring-0 placeholder-slate-300 text-slate-800 px-0 outline-none">
+                            
+                            <div class="mt-4 flex flex-wrap gap-2 items-center">
+                                <div id="tags-container" class="flex flex-wrap gap-2"></div>
+                                
+                                <div id="add-tag-wrapper" class="flex items-center gap-2 group ml-1">
+                                    <i data-lucide="tag" class="w-3 h-3 text-slate-300 group-hover:text-slate-400 transition-colors"></i>
+                                    <input type="text" id="tag-input" placeholder="Adicionar etiqueta..." class="bg-transparent text-xs text-slate-500 placeholder-slate-300 focus:outline-none min-w-[120px] focus:placeholder-slate-400">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Editor -->
+                        <div class="flex-1 px-8 md:px-16 pb-12 relative">
+                            <textarea id="note-content" placeholder="Comece a escrever..." spellcheck="false" 
+                                class="w-full h-full min-h-[500px] resize-none bg-transparent border-none focus:ring-0 text-slate-700 placeholder-slate-300 px-0 py-0 tracking-wide leading-8 outline-none"></textarea>
+                            <div id="note-preview" class="hidden prose prose-slate max-w-none text-slate-700 whitespace-pre-wrap min-h-[500px]"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Lógica da Aplicação -->
+    <script>
+        // Configurações
+        const coverThemes = [
+            { id: 'rose', name: 'Rosa Chá', icon: '🌸', bg: 'bg-rose-50', gradient: 'from-rose-50 to-rose-100', accent: 'bg-rose-200', text: 'text-rose-700', border: 'border-rose-200', ring: 'ring-rose-200' },
+            { id: 'blue', name: 'Céu Sereno', icon: '☁️', bg: 'bg-sky-50', gradient: 'from-sky-50 to-sky-100', accent: 'bg-sky-200', text: 'text-sky-700', border: 'border-sky-200', ring: 'ring-sky-200' },
+            { id: 'green', name: 'Menta', icon: '🌿', bg: 'bg-emerald-50', gradient: 'from-emerald-50 to-emerald-100', accent: 'bg-emerald-200', text: 'text-emerald-700', border: 'border-emerald-200', ring: 'ring-emerald-200' },
+            { id: 'lavender', name: 'Lavanda', icon: '💜', bg: 'bg-violet-50', gradient: 'from-violet-50 to-violet-100', accent: 'bg-violet-200', text: 'text-violet-700', border: 'border-violet-200', ring: 'ring-violet-200' },
+            { id: 'peach', name: 'Pêssego', icon: '🍑', bg: 'bg-orange-50', gradient: 'from-orange-50 to-orange-100', accent: 'bg-orange-200', text: 'text-orange-700', border: 'border-orange-200', ring: 'ring-orange-200' },
+            { id: 'hearts', name: 'Corações', icon: '💖', bg: 'bg-pink-50', gradient: 'from-pink-100 to-rose-200', accent: 'bg-pink-300', text: 'text-pink-600', border: 'border-pink-300', ring: 'ring-pink-300' },
+            { id: 'bear', name: 'Ursinho', icon: '🐻', bg: 'bg-amber-50', gradient: 'from-amber-100 to-orange-100', accent: 'bg-amber-200', text: 'text-amber-800', border: 'border-amber-200', ring: 'ring-amber-300' },
+        ];
+
+        const fontOptions = {
+            handwriting: { id: 'handwriting', name: 'Manuscrita', family: '"Caveat", cursive', class: 'font-handwriting' },
+            serif: { id: 'serif', name: 'Clássica', family: '"Merriweather", serif', class: 'font-serif' },
+            sans: { id: 'sans', name: 'Digital', family: '"Nunito", sans-serif', class: 'font-sans' }
+        };
+
+        const paperStyles = {
+            lined: {
+                label: 'Pautado',
+                css: {
+                    backgroundImage: 'linear-gradient(transparent 31px, #bfdbfe 31px)',
+                    backgroundSize: '100% 32px',
+                    lineHeight: '32px',
+                    backgroundAttachment: 'local'
+                }
+            },
+            grid: {
+                label: 'Quadriculado',
+                css: {
+                    backgroundImage: 'linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px)',
+                    backgroundSize: '20px 20px',
+                    lineHeight: '32px',
+                    backgroundAttachment: 'local'
+                }
+            },
+            dotted: {
+                label: 'Pontilhado',
+                css: {
+                    backgroundImage: 'radial-gradient(#94a3b8 1px, transparent 1px)',
+                    backgroundSize: '20px 20px',
+                    lineHeight: '32px',
+                    backgroundAttachment: 'local'
+                }
+            },
+            plain: {
+                label: 'Branco',
+                css: {
+                    lineHeight: '32px',
+                    backgroundImage: 'none'
+                }
+            }
+        };
+
+        // Estado da Aplicação
+        const app = {
+            notes: [],
+            activeNoteId: null,
+            searchQuery: '',
+            viewMode: 'edit',
+            isSidebarOpen: false,
+            isMenuOpen: false,
+
+            init() {
+                // Carregar notas
+                const saved = localStorage.getItem('smart-notebook-html-v1');
+                if (saved) {
+                    this.notes = JSON.parse(saved);
+                } else {
+                    this.notes = [
+                        {
+                            id: '1',
+                            title: 'Diário de Gratidão 💖',
+                            content: 'Hoje estou grata por:\n1. O sol quentinho pela manhã\n2. Café com bolo\n3. Ter falado com a avó\n\n"Espalhe amor por onde for."',
+                            tags: ['gratidão', 'amor'],
+                            theme: 'hearts',
+                            paper: 'lined',
+                            font: 'handwriting',
+                            fontSize: 24,
+                            updatedAt: new Date().toISOString(),
+                        },
+                        {
+                            id: '2',
+                            title: 'Lista de Piquenique 🐻',
+                            content: '- Toalha xadrez\n- Sanduíches de mel\n- Sumo de maçã\n- Biscoitos em forma de urso',
+                            tags: ['passeio', 'comida'],
+                            theme: 'bear',
+                            paper: 'grid',
+                            font: 'handwriting',
+                            fontSize: 20,
+                            updatedAt: new Date(Date.now() - 86400000).toISOString(),
+                        }
+                    ];
+                }
+                
+                // Definir nota ativa
+                if (this.notes.length > 0) {
+                    this.activeNoteId = this.notes[0].id;
+                }
+
+                // Listeners
+                document.getElementById('search-input').addEventListener('input', (e) => {
+                    this.searchQuery = e.target.value;
+                    this.renderSidebar();
+                });
+
+                document.getElementById('note-title').addEventListener('input', (e) => this.updateNote('title', e.target.value));
+                document.getElementById('note-content').addEventListener('input', (e) => this.updateNote('content', e.target.value));
+                
+                document.getElementById('tag-input').addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && e.target.value.trim()) {
+                        this.addTag(e.target.value.trim());
+                        e.target.value = '';
+                    }
+                });
+
+                // Renderizar Inicial
+                this.renderSidebar();
+                this.renderMain();
+                this.renderMenu();
+                lucide.createIcons();
+            },
+
+            save() {
+                localStorage.setItem('smart-notebook-html-v1', JSON.stringify(this.notes));
+            },
+
+            addNote() {
+                const newNote = {
+                    id: Date.now().toString(),
+                    title: '',
+                    content: '',
+                    tags: [],
+                    theme: 'rose',
+                    paper: 'lined',
+                    font: 'handwriting',
+                    fontSize: 22,
+                    updatedAt: new Date().toISOString(),
+                };
+                this.notes.unshift(newNote);
+                this.activeNoteId = newNote.id;
+                this.viewMode = 'edit';
+                
+                if (window.innerWidth < 768) this.toggleSidebar();
+                
+                this.save();
+                this.renderSidebar();
+                this.renderMain();
+            },
+
+            updateNote(key, value) {
+                const note = this.notes.find(n => n.id === this.activeNoteId);
+                if (note) {
+                    note[key] = value;
+                    note.updatedAt = new Date().toISOString();
+                    this.save();
+                    
+                    if (key === 'title' || key === 'tags') {
+                        this.renderSidebar();
+                    }
+                    if (key === 'fontSize' || key === 'font' || key === 'paper' || key === 'theme') {
+                        this.renderMain(); // Re-render styles
+                    }
+                }
+            },
+
+            deleteNote(e, id) {
+                e.stopPropagation();
+                if(!confirm("Tem a certeza que deseja apagar esta nota?")) return;
+
+                this.notes = this.notes.filter(n => n.id !== id);
+                if (this.activeNoteId === id) {
+                    this.activeNoteId = this.notes.length > 0 ? this.notes[0].id : null;
+                }
+                this.save();
+                this.renderSidebar();
+                this.renderMain();
+            },
+
+            selectNote(id) {
+                this.activeNoteId = id;
+                this.viewMode = 'edit';
+                if (window.innerWidth < 768) this.toggleSidebar();
+                this.renderSidebar();
+                this.renderMain();
+            },
+
+            addTag(tag) {
+                const note = this.notes.find(n => n.id === this.activeNoteId);
+                const normalizedTag = tag.toLowerCase();
+                if (note && !note.tags.includes(normalizedTag)) {
+                    this.updateNote('tags', [...note.tags, normalizedTag]);
+                    this.renderTags();
+                }
+            },
+
+            removeTag(tag) {
+                const note = this.notes.find(n => n.id === this.activeNoteId);
+                if (note) {
+                    this.updateNote('tags', note.tags.filter(t => t !== tag));
+                    this.renderTags();
+                }
+            },
+
+            toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.remove('-translate-x-full');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            },
+
+            toggleViewMode() {
+                this.viewMode = this.viewMode === 'edit' ? 'preview' : 'edit';
+                this.renderMain();
+            },
+
+            toggleAppearanceMenu() {
+                const menu = document.getElementById('appearance-menu');
+                const btn = document.getElementById('btn-personalizar');
+                
+                if (menu.classList.contains('hidden')) {
+                    menu.classList.remove('hidden');
+                    btn.classList.add('bg-slate-100', 'text-slate-800');
+                    btn.classList.remove('text-slate-500');
+                } else {
+                    menu.classList.add('hidden');
+                    btn.classList.remove('bg-slate-100', 'text-slate-800');
+                    btn.classList.add('text-slate-500');
+                }
+            },
+
+            changeFontSize(delta) {
+                const note = this.notes.find(n => n.id === this.activeNoteId);
+                if (note) {
+                    const current = note.fontSize || 18;
+                    const newSize = Math.max(14, Math.min(28, current + delta));
+                    this.updateNote('fontSize', newSize);
+                }
+            },
+
+            // --- RENDERIZADORES ---
+
+            renderSidebar() {
+                const list = document.getElementById('notes-list');
+                const activeTheme = this.getActiveNoteTheme();
+                
+                // Atualizar ícone e cor do header da sidebar
+                const headerIconContainer = document.getElementById('sidebar-icon-container');
+                const appIcon = document.getElementById('app-icon');
+                
+                if(activeTheme) {
+                    // Limpar classes antigas de gradiente
+                    headerIconContainer.className = `w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-sm transform -rotate-3 transition-all duration-500 bg-gradient-to-br ${activeTheme.gradient}`;
+                    appIcon.textContent = activeTheme.icon;
+                }
+
+                list.innerHTML = '';
+
+                const filtered = this.notes.filter(n => {
+                    const q = this.searchQuery.toLowerCase();
+                    return n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q) || n.tags.some(t => t.includes(q));
+                }).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+                if (filtered.length === 0) {
+                    list.innerHTML = '<div class="text-center py-10 text-slate-400"><p class="text-sm">Nada encontrado...</p></div>';
+                    return;
+                }
+
+                filtered.forEach(note => {
+                    const theme = coverThemes.find(t => t.id === (note.theme || 'rose'));
+                    const isActive = note.id === this.activeNoteId;
+                    const date = new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'short' }).format(new Date(note.updatedAt));
+
+                    const div = document.createElement('div');
+                    div.className = `p-4 rounded-xl cursor-pointer transition-all border-l-4 relative group mb-2 ${
+                        isActive 
+                        ? `bg-gradient-to-r ${theme.gradient} border-l-${theme.text.split('-')[1]}-400 shadow-sm` 
+                        : 'bg-white border-l-transparent hover:bg-slate-50'
+                    }`;
+                    div.onclick = () => this.selectNote(note.id);
+
+                    div.innerHTML = `
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="font-bold text-sm line-clamp-1 ${isActive ? 'text-slate-800' : 'text-slate-700'}">
+                                ${theme.icon} ${note.title || 'Sem título'}
+                            </h3>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isActive ? 'bg-white/50 text-slate-600' : 'text-slate-400'}">
+                                ${date}
+                            </span>
+                        </div>
+                        <p class="text-xs line-clamp-2 mb-2 leading-relaxed ${isActive ? 'text-slate-600' : 'text-slate-400'}">
+                            ${note.content || 'Página em branco...'}
+                        </p>
+                        <div class="flex flex-wrap gap-1">
+                            ${note.tags.slice(0, 3).map(tag => `
+                                <span class="text-[10px] px-1.5 py-0.5 rounded text-slate-500 ${isActive ? 'bg-white/40' : 'bg-slate-100'}">#${tag}</span>
+                            `).join('')}
+                        </div>
+                        <button onclick="app.deleteNote(event, '${note.id}')" class="absolute right-2 bottom-2 p-1.5 rounded-full text-slate-400 hover:text-rose-500 hover:bg-white/50 opacity-0 group-hover:opacity-100 transition-all">
+                            <i data-lucide="trash-2" class="w-3 h-3"></i>
+                        </button>
+                    `;
+                    list.appendChild(div);
+                });
+                lucide.createIcons();
+            },
+
+            renderMain() {
+                const emptyState = document.getElementById('empty-state');
+                const editorContainer = document.getElementById('editor-container');
+                const note = this.notes.find(n => n.id === this.activeNoteId);
+
+                if (!note) {
+                    emptyState.classList.remove('hidden');
+                    editorContainer.classList.add('hidden');
+                    return;
+                }
+
+                emptyState.classList.add('hidden');
+                editorContainer.classList.remove('hidden');
+
+                // Aplicar Dados
+                document.getElementById('note-title').value = note.title;
+                document.getElementById('last-updated').innerText = new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'short' }).format(new Date(note.updatedAt));
+                
+                // Aplicar Temas e Estilos
+                const theme = coverThemes.find(t => t.id === (note.theme || 'rose'));
+                const paper = paperStyles[note.paper || 'lined'];
+                const font = fontOptions[note.font || 'handwriting'];
+                const fontSize = note.fontSize || 22;
+
+                // Border do papel
+                const paperSheet = document.getElementById('paper-sheet');
+                paperSheet.className = `flex-1 flex flex-col bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-visible transition-all duration-500 border-l-[12px] relative ${theme.border}`;
+
+                // Toolbar Icons
+                document.getElementById('toolbar-icon-bg').className = `w-8 h-8 rounded-full flex items-center justify-center text-lg shadow-inner ${theme.bg}`;
+                document.getElementById('toolbar-icon').innerText = theme.icon;
+                document.getElementById('paper-label').innerText = paper.label;
+
+                // Botão View Mode
+                const btnView = document.getElementById('btn-view-mode');
+                if (this.viewMode === 'edit') {
+                    btnView.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
+                    btnView.className = 'p-2 rounded-xl transition-all bg-slate-800 text-white shadow-lg shadow-slate-200';
+                } else {
+                    btnView.innerHTML = '<i data-lucide="edit-3" class="w-4 h-4"></i>';
+                    btnView.className = 'p-2 rounded-xl transition-all bg-white text-slate-500 hover:bg-slate-50 border border-slate-200';
+                }
+
+                // Margem
+                const margin = document.getElementById('margin-line');
+                margin.style.display = (note.paper === 'lined' || note.paper === 'plain') ? 'block' : 'none';
+
+                // Input Title Fonte
+                document.getElementById('note-title').style.fontFamily = font.family;
+
+                // Content Area (Textarea vs Preview)
+                const textarea = document.getElementById('note-content');
+                const preview = document.getElementById('note-preview');
+                const tagWrapper = document.getElementById('add-tag-wrapper');
+
+                // Estilos comuns
+                const commonStyles = {
+                    fontFamily: font.family,
+                    fontSize: `${fontSize}px`,
+                    ...paper.css
+                };
+
+                // Aplicar CSS Object to Style String
+                const applyStyles = (el) => {
+                    Object.assign(el.style, commonStyles);
+                };
+
+                if (this.viewMode === 'edit') {
+                    textarea.value = note.content;
+                    textarea.classList.remove('hidden');
+                    preview.classList.add('hidden');
+                    tagWrapper.classList.remove('hidden');
+                    document.getElementById('note-title').disabled = false;
+                    applyStyles(textarea);
+                } else {
+                    preview.innerText = note.content; // Simples text render, poderia ser markdown
+                    textarea.classList.add('hidden');
+                    preview.classList.remove('hidden');
+                    tagWrapper.classList.add('hidden');
+                    document.getElementById('note-title').disabled = true;
+                    applyStyles(preview);
+                }
+
+                this.renderTags();
+                lucide.createIcons();
+            },
+
+            renderTags() {
+                const container = document.getElementById('tags-container');
+                const note = this.notes.find(n => n.id === this.activeNoteId);
+                const theme = coverThemes.find(t => t.id === (note?.theme || 'rose'));
+                
+                container.innerHTML = '';
+                
+                if (note) {
+                    note.tags.forEach(tag => {
+                        const span = document.createElement('span');
+                        span.className = `inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${theme.bg} ${theme.text} cursor-pointer hover:bg-red-50 hover:text-red-500 transition-colors border border-transparent hover:border-red-100`;
+                        span.innerText = `#${tag}`;
+                        span.onclick = () => this.removeTag(tag);
+                        container.appendChild(span);
+                    });
+                }
+            },
+
+            renderMenu() {
+                const menu = document.getElementById('appearance-menu');
+                // Seção Temas
+                let html = `
+                    <div class="mb-5">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 block flex items-center gap-2">
+                             <div class="w-full h-px bg-slate-100"></div> Tema & Capa <div class="w-full h-px bg-slate-100"></div>
+                        </span>
+                        <div class="grid grid-cols-5 gap-2">
+                `;
+                
+                coverThemes.forEach(t => {
+                    html += `
+                        <button onclick="app.updateNote('theme', '${t.id}')" 
+                            class="w-10 h-10 rounded-full transition-all flex items-center justify-center text-lg bg-gradient-to-br ${t.gradient} hover:scale-110 hover:shadow-sm opacity-80 hover:opacity-100" 
+                            title="${t.name}">
+                            ${t.icon}
+                        </button>
+                    `;
+                });
+
+                html += `</div></div>`;
+
+                // Seção Papel
+                html += `
+                    <div class="mb-5">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 block flex items-center gap-2">
+                             <div class="w-full h-px bg-slate-100"></div> Papel <div class="w-full h-px bg-slate-100"></div>
+                        </span>
+                        <div class="grid grid-cols-2 gap-2">
+                `;
+
+                for (const [key, style] of Object.entries(paperStyles)) {
+                    html += `
+                        <button onclick="app.updateNote('paper', '${key}')" 
+                            class="text-xs py-2 px-3 rounded-lg border transition-all flex items-center justify-center gap-2 border-slate-100 text-slate-500 hover:bg-slate-50">
+                            ${key === 'lined' ? '<i data-lucide="align-left" class="w-3 h-3"></i>' : ''} ${style.label}
+                        </button>
+                    `;
+                }
+
+                html += `</div></div>`;
+
+                // Seção Texto
+                html += `
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 block flex items-center gap-2">
+                             <div class="w-full h-px bg-slate-100"></div> Texto <div class="w-full h-px bg-slate-100"></div>
+                        </span>
+                        <div class="flex bg-slate-100 p-1 rounded-lg mb-3">
+                `;
+
+                for (const [key, font] of Object.entries(fontOptions)) {
+                    html += `
+                        <button onclick="app.updateNote('font', '${key}')" 
+                            class="flex-1 py-1.5 text-xs rounded-md transition-all text-slate-500 hover:text-slate-700" 
+                            style="font-family: ${font.family}">Aa</button>
+                    `;
+                }
+
+                html += `</div>
+                        <div class="flex items-center justify-between bg-slate-50 rounded-lg p-2 border border-slate-100">
+                            <button onclick="app.changeFontSize(-2)" class="p-1 hover:bg-white rounded hover:shadow-sm text-slate-500"><i data-lucide="minus" class="w-3 h-3"></i></button>
+                            <span class="text-xs font-medium text-slate-600 w-12 text-center">Tamanho</span>
+                            <button onclick="app.changeFontSize(2)" class="p-1 hover:bg-white rounded hover:shadow-sm text-slate-500"><i data-lucide="plus" class="w-3 h-3"></i></button>
+                        </div>
+                    </div>
+                `;
+
+                menu.innerHTML = html;
+            },
+
+            getActiveNoteTheme() {
+                const note = this.notes.find(n => n.id === this.activeNoteId);
+                return note ? coverThemes.find(t => t.id === (note.theme || 'rose')) : null;
+            }
+        };
+
+        // Inicializar
+        window.onload = () => app.init();
+
+    </script>
+</body>
+</html>
