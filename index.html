@@ -199,6 +199,25 @@
 
     </main>
 
+    <!-- Modal de Confirmação -->
+    <div id="delete-modal" class="hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center animate-pop">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl max-w-sm w-full mx-4 text-center border-4 border-rose-100">
+            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm">
+                💔
+            </div>
+            <h3 class="text-xl font-bold text-slate-700 mb-2 font-ui">Apagar Página?</h3>
+            <p class="text-slate-500 text-sm mb-6 font-medium">Tens a certeza que queres apagar esta memória fofinha? Não há volta a dar! 🥺</p>
+            <div class="flex gap-3 justify-center">
+                <button onclick="app.closeDeleteModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold hover:bg-slate-200 transition-colors text-sm font-ui">
+                    Cancelar
+                </button>
+                <button onclick="app.confirmDelete()" class="px-5 py-2.5 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors shadow-lg shadow-rose-200 text-sm font-ui">
+                    Sim, apagar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Lógica da Aplicação -->
     <script>
         // --- Configurações Fofas com Cores Fortes ---
@@ -294,6 +313,7 @@
             searchQuery: '',
             viewMode: 'edit',
             enableSpellcheck: true, // Novo estado para o corretor
+            noteToDeleteId: null, // ID da nota a apagar
             
             init() {
                 const saved = localStorage.getItem('smart-notebook-cute-v3');
@@ -405,10 +425,24 @@
                 }
             },
 
+            // Função para iniciar a eliminação (abre o modal)
             deleteNote(e, id) {
                 e.stopPropagation();
-                if(!confirm("Apagar esta página fofinha? 🥺")) return;
+                this.noteToDeleteId = id;
+                document.getElementById('delete-modal').classList.remove('hidden');
+            },
 
+            // Fecha o modal sem apagar
+            closeDeleteModal() {
+                this.noteToDeleteId = null;
+                document.getElementById('delete-modal').classList.add('hidden');
+            },
+
+            // Confirma a eliminação e apaga a nota
+            confirmDelete() {
+                if (!this.noteToDeleteId) return;
+                
+                const id = this.noteToDeleteId;
                 this.notes = this.notes.filter(n => n.id !== id);
                 if (this.activeNoteId === id) {
                     this.activeNoteId = this.notes.length > 0 ? this.notes[0].id : null;
@@ -416,6 +450,8 @@
                 this.save();
                 this.renderSidebar();
                 this.renderMain();
+                
+                this.closeDeleteModal();
             },
 
             selectNote(id) {
