@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caderno Inteligente</title>
+    <title>Caderno Inteligente ✨</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,15 +12,29 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Nunito:wght@400;600;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Nunito:wght@400;600;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Dancing+Script:wght@400;700&family=Pacifico&family=Indie+Flower&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
         /* Fontes */
+        .font-ui { font-family: 'Quicksand', sans-serif; }
         .font-serif { font-family: 'Merriweather', serif; }
         .font-sans { font-family: 'Nunito', sans-serif; }
         .font-handwriting { font-family: 'Caveat', cursive; }
+        .font-marker { font-family: 'Patrick Hand', cursive; }
+        .font-dancing { font-family: 'Dancing Script', cursive; }
+        .font-pacifico { font-family: 'Pacifico', cursive; }
+        .font-indie { font-family: 'Indie Flower', cursive; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
 
-        /* Scrollbar Personalizada */
+        /* Background Fofo */
+        body {
+            background-color: #fff0f5; /* Lavender Blush */
+            background-image: radial-gradient(#ffb7b2 1.5px, transparent 1.5px), radial-gradient(#ffb7b2 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        /* Scrollbar Cute */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
         }
@@ -28,148 +42,152 @@
             background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: rgba(203, 213, 225, 0.4);
+            background-color: #fbcfe8; /* Pink 200 */
             border-radius: 20px;
+            border: 2px solid white;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(203, 213, 225, 0.7);
+            background-color: #f472b6; /* Pink 400 */
         }
 
-        /* Classes utilitárias para esconder scrollbar mas manter funcionalidade */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        /* Animações */
+        @keyframes popIn {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .animate-pop {
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
     </style>
 </head>
-<body class="bg-[#f0f2f5] font-sans text-slate-600 overflow-hidden h-screen w-full flex">
+<body class="overflow-hidden h-screen w-full flex font-ui text-slate-600">
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-full md:w-80 flex-shrink-0 flex flex-col border-r border-slate-200 bg-white shadow-xl md:shadow-none z-20 h-full absolute md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+    <aside id="sidebar" class="w-full md:w-80 flex-shrink-0 flex flex-col bg-white/90 backdrop-blur-xl border-r-4 border-rose-100 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-30 h-full absolute md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-300 rounded-r-[3rem] my-2 md:my-0">
         
         <!-- Header Sidebar -->
-        <div class="p-6 pb-4">
-            <div class="flex items-center gap-3 mb-6">
-                <div id="sidebar-icon-container" class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-sm transform -rotate-3 transition-all duration-500">
-                    <span id="app-icon">🌸</span>
+        <div class="p-6 pb-2">
+            <div class="flex items-center gap-4 mb-6">
+                <div id="sidebar-icon-container" class="w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-sm ring-4 ring-rose-50 bg-rose-100 text-rose-500 transition-all duration-500 hover:rotate-12">
+                    <span id="app-icon">🎀</span>
                 </div>
                 <div>
-                    <h1 class="text-xl font-serif font-bold text-slate-700 tracking-tight leading-none">Caderno</h1>
-                    <span class="text-xs text-slate-400 font-medium tracking-widest uppercase">Inteligente</span>
+                    <h1 class="text-2xl font-pacifico text-rose-500 tracking-wide">Diário</h1>
+                    <span class="text-xs font-bold tracking-widest uppercase text-rose-300 bg-rose-50 px-2 py-1 rounded-full">Secret</span>
                 </div>
             </div>
 
             <!-- Search -->
-            <div class="relative mb-4">
-                <i data-lucide="search" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i>
-                <input type="text" id="search-input" placeholder="Procurar..." 
-                    class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-none rounded-xl text-sm text-slate-600 placeholder-slate-400 focus:ring-2 focus:ring-rose-200 transition-all outline-none">
+            <div class="relative mb-4 group">
+                <i data-lucide="search" class="absolute left-4 top-3.5 w-4 h-4 text-rose-300 group-focus-within:text-rose-500 transition-colors"></i>
+                <input type="text" id="search-input" placeholder="Procurar memórias..." 
+                    class="w-full pl-11 pr-4 py-3 bg-rose-50/50 border-2 border-transparent hover:border-rose-100 focus:border-rose-200 rounded-2xl text-sm text-slate-600 placeholder-rose-300 focus:ring-0 transition-all outline-none font-medium">
             </div>
 
-            <button onclick="app.addNote()" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-slate-200 hover:shadow-lg hover:shadow-slate-300 transform hover:-translate-y-0.5 active:translate-y-0">
-                <i data-lucide="plus" class="w-5 h-5"></i>
-                <span class="font-medium">Nova Página</span>
+            <button onclick="app.addNote()" class="w-full py-3 px-4 bg-rose-400 hover:bg-rose-500 text-white rounded-2xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-rose-200 hover:shadow-xl hover:shadow-rose-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 group">
+                <i data-lucide="sparkles" class="w-4 h-4 animate-pulse"></i>
+                <span class="font-bold text-sm tracking-wide font-ui">Nova Página</span>
             </button>
         </div>
 
         <!-- Lista de Notas -->
-        <div id="notes-list" class="flex-1 overflow-y-auto px-4 pb-4 space-y-2 custom-scrollbar">
+        <div id="notes-list" class="flex-1 overflow-y-auto px-4 pb-4 space-y-3 custom-scrollbar pt-2">
             <!-- As notas serão inseridas aqui via JS -->
         </div>
+        
     </aside>
 
     <!-- Área Principal -->
     <main class="flex-1 flex flex-col h-full relative w-full overflow-hidden">
         
         <!-- Mobile Header Toggle -->
-        <div class="md:hidden p-4 flex items-center gap-3 bg-white shadow-sm z-10">
-            <button onclick="app.toggleSidebar()" class="text-slate-500">
-                <i data-lucide="more-vertical" class="w-6 h-6"></i>
+        <div class="md:hidden p-4 flex items-center gap-3 bg-white/60 backdrop-blur-md z-20 sticky top-0">
+            <button onclick="app.toggleSidebar()" class="text-rose-400 hover:text-rose-600 transition-colors p-2 bg-white rounded-full shadow-sm">
+                <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
-            <span class="font-serif font-bold text-slate-700">Meu Caderno</span>
+            <span class="font-pacifico text-xl text-rose-500">Meu Diário</span>
         </div>
 
-        <!-- Container Vazio (Sem nota selecionada) -->
-        <div id="empty-state" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center opacity-50 h-full">
-            <i data-lucide="book-heart" class="w-32 h-32 mb-6 text-slate-300"></i>
-            <h2 class="text-2xl font-serif text-slate-500 mb-2">Abra o seu caderno</h2>
-            <p class="text-slate-400">Escolha uma página ao lado para começar a escrever.</p>
+        <!-- Container Vazio -->
+        <div id="empty-state" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center opacity-70 h-full animate-pop">
+            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-6 ring-8 ring-rose-50">
+                <span class="text-6xl">🧸</span>
+            </div>
+            <h2 class="text-3xl font-pacifico text-rose-400 mb-3">Olá, sonhador(a)!</h2>
+            <p class="text-slate-500 max-w-xs font-medium bg-white/50 px-4 py-2 rounded-xl">Escolhe uma página ao lado para escreveres os teus pensamentos.</p>
         </div>
 
         <!-- Editor Container -->
-        <div id="editor-container" class="flex-1 flex flex-col h-full max-w-5xl mx-auto w-full p-2 md:p-6 lg:p-8">
+        <div id="editor-container" class="flex-1 flex flex-col h-full max-w-5xl mx-auto w-full p-2 md:p-6 lg:p-8 transition-all duration-500">
             
             <!-- Folha de Papel -->
-            <div id="paper-sheet" class="flex-1 flex flex-col bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-visible transition-all duration-500 border-l-[12px] relative">
+            <div id="paper-sheet" class="flex-1 flex flex-col bg-white rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-500 relative ring-8 ring-white/50">
                 
-                <!-- Toolbar -->
-                <div id="toolbar" class="px-4 md:px-8 py-4 flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 rounded-tr-3xl bg-white/50 backdrop-blur-sm z-20 sticky top-0">
+                <!-- Toolbar Flutuante -->
+                <div id="toolbar" class="px-6 py-4 flex flex-wrap items-center justify-between gap-4 border-b border-rose-100 bg-white/90 backdrop-blur-sm z-20 sticky top-0">
                     
-                    <div class="flex items-center gap-3">
-                        <div id="toolbar-icon-bg" class="w-8 h-8 rounded-full flex items-center justify-center text-lg shadow-inner">
+                    <div class="flex items-center gap-4">
+                        <div id="toolbar-icon-bg" class="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shadow-sm ring-4 ring-rose-50 transition-colors bg-rose-100 text-rose-500">
                             <span id="toolbar-icon">🌸</span>
                         </div>
-                        <div class="hidden sm:block h-4 w-px bg-slate-200"></div>
-                        <span id="paper-label" class="hidden sm:block text-xs font-bold uppercase tracking-wider text-slate-400">Padrão</span>
-                        <span class="text-slate-300 hidden sm:block">|</span>
-                        <div class="flex items-center gap-2 text-xs text-slate-400">
-                            <i data-lucide="calendar" class="w-3 h-3"></i>
-                            <span id="last-updated">Hoje</span>
+                        <div class="flex flex-col">
+                            <span id="paper-label" class="text-[10px] font-bold uppercase tracking-wider text-rose-300 bg-rose-50 px-2 py-0.5 rounded-full w-fit">Padrão</span>
+                            <div class="flex items-center gap-1.5 text-xs font-bold text-slate-400 mt-1">
+                                <i data-lucide="clock" class="w-3 h-3"></i>
+                                <span id="last-updated">Agora</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 bg-rose-50 p-1.5 rounded-2xl">
                         <!-- Menu Personalizar -->
                         <div class="relative">
-                            <button onclick="app.toggleAppearanceMenu()" id="btn-personalizar" class="px-3 py-2 rounded-xl transition-all flex items-center gap-2 text-sm font-medium text-slate-500 hover:bg-slate-50">
+                            <button onclick="app.toggleAppearanceMenu()" id="btn-personalizar" class="px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-rose-400 hover:bg-white hover:text-rose-600 hover:shadow-sm">
                                 <i data-lucide="palette" class="w-4 h-4"></i>
-                                <span class="hidden sm:inline">Personalizar</span>
+                                <span class="hidden sm:inline">Decorar</span>
                             </button>
                             
-                            <!-- Popover Menu -->
-                            <div id="appearance-menu" class="hidden absolute right-0 top-full mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 p-5 z-50 animate-in fade-in slide-in-from-top-2">
+                            <!-- Popover Menu Moderno -->
+                            <div id="appearance-menu" class="hidden absolute right-0 top-full mt-4 w-80 bg-white rounded-3xl shadow-[0_10px_40px_-10px_rgba(251,113,133,0.3)] border-2 border-rose-100 p-6 z-50 animate-pop">
                                 <!-- Preenchido via JS -->
                             </div>
                         </div>
 
-                        <div class="h-6 w-px bg-slate-200 mx-1"></div>
+                        <div class="h-5 w-px bg-rose-200 mx-1"></div>
 
-                        <button onclick="app.toggleViewMode()" id="btn-view-mode" class="p-2 rounded-xl transition-all bg-slate-800 text-white shadow-lg shadow-slate-200">
+                        <button onclick="app.toggleViewMode()" id="btn-view-mode" class="p-2 rounded-xl transition-all bg-white text-rose-400 hover:text-rose-600 shadow-sm border border-rose-100 hover:border-rose-200">
                             <i data-lucide="eye" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Área de Conteúdo -->
-                <div class="flex-1 overflow-y-auto relative custom-scrollbar">
+                <div class="flex-1 overflow-y-auto relative custom-scrollbar bg-local" id="paper-content-area">
                     
-                    <!-- Linha Vertical Rosa (Margem) -->
-                    <div id="margin-line" class="absolute left-8 md:left-14 top-0 bottom-0 w-px bg-rose-300/40 z-0 h-full pointer-events-none"></div>
+                    <!-- Linha Vertical (Margem) -->
+                    <div id="margin-line" class="absolute left-10 md:left-20 top-0 bottom-0 w-px bg-rose-200/50 z-0 h-full pointer-events-none"></div>
 
-                    <div class="max-w-4xl mx-auto min-h-full flex flex-col relative z-10">
+                    <div class="max-w-3xl mx-auto min-h-full flex flex-col relative z-10">
                         
                         <!-- Cabeçalho Nota -->
-                        <div class="px-8 md:px-16 pt-8 pb-4">
-                            <input type="text" id="note-title" placeholder="Título..." class="w-full text-4xl font-bold bg-transparent border-none focus:ring-0 placeholder-slate-300 text-slate-800 px-0 outline-none">
+                        <div class="px-10 md:px-12 pt-10 pb-6">
+                            <input type="text" id="note-title" placeholder="Título Mágico..." class="w-full text-4xl font-bold bg-transparent border-none focus:ring-0 placeholder-rose-200 text-slate-700 px-0 outline-none transition-colors duration-300 font-dancing">
                             
-                            <div class="mt-4 flex flex-wrap gap-2 items-center">
+                            <div class="mt-6 flex flex-wrap gap-2 items-center">
                                 <div id="tags-container" class="flex flex-wrap gap-2"></div>
                                 
-                                <div id="add-tag-wrapper" class="flex items-center gap-2 group ml-1">
-                                    <i data-lucide="tag" class="w-3 h-3 text-slate-300 group-hover:text-slate-400 transition-colors"></i>
-                                    <input type="text" id="tag-input" placeholder="Adicionar etiqueta..." class="bg-transparent text-xs text-slate-500 placeholder-slate-300 focus:outline-none min-w-[120px] focus:placeholder-slate-400">
+                                <div id="add-tag-wrapper" class="flex items-center gap-2 group ml-1 bg-white/50 px-3 py-1 rounded-full border border-transparent hover:border-rose-200 transition-all cursor-text" onclick="document.getElementById('tag-input').focus()">
+                                    <i data-lucide="tag" class="w-3 h-3 text-rose-300"></i>
+                                    <input type="text" id="tag-input" placeholder="Etiqueta..." class="bg-transparent text-xs font-bold text-rose-500 placeholder-rose-300 focus:outline-none min-w-[60px]">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Editor -->
-                        <div class="flex-1 px-8 md:px-16 pb-12 relative">
-                            <textarea id="note-content" placeholder="Comece a escrever..." spellcheck="false" 
-                                class="w-full h-full min-h-[500px] resize-none bg-transparent border-none focus:ring-0 text-slate-700 placeholder-slate-300 px-0 py-0 tracking-wide leading-8 outline-none"></textarea>
-                            <div id="note-preview" class="hidden prose prose-slate max-w-none text-slate-700 whitespace-pre-wrap min-h-[500px]"></div>
+                        <div class="flex-1 px-10 md:px-12 pb-16 relative">
+                            <textarea id="note-content" placeholder="Querido diário..." spellcheck="true" 
+                                class="w-full h-full min-h-[500px] resize-none bg-transparent border-none focus:ring-0 px-0 py-0 tracking-wide leading-9 outline-none transition-colors duration-300"></textarea>
+                            <div id="note-preview" class="hidden prose prose-lg prose-pink max-w-none whitespace-pre-wrap min-h-[500px]"></div>
                         </div>
 
                     </div>
@@ -182,56 +200,87 @@
 
     <!-- Lógica da Aplicação -->
     <script>
-        // Configurações
+        // --- Configurações Fofas ---
+        
         const coverThemes = [
-            { id: 'rose', name: 'Rosa Chá', icon: '🌸', bg: 'bg-rose-50', gradient: 'from-rose-50 to-rose-100', accent: 'bg-rose-200', text: 'text-rose-700', border: 'border-rose-200', ring: 'ring-rose-200' },
-            { id: 'blue', name: 'Céu Sereno', icon: '☁️', bg: 'bg-sky-50', gradient: 'from-sky-50 to-sky-100', accent: 'bg-sky-200', text: 'text-sky-700', border: 'border-sky-200', ring: 'ring-sky-200' },
-            { id: 'green', name: 'Menta', icon: '🌿', bg: 'bg-emerald-50', gradient: 'from-emerald-50 to-emerald-100', accent: 'bg-emerald-200', text: 'text-emerald-700', border: 'border-emerald-200', ring: 'ring-emerald-200' },
-            { id: 'lavender', name: 'Lavanda', icon: '💜', bg: 'bg-violet-50', gradient: 'from-violet-50 to-violet-100', accent: 'bg-violet-200', text: 'text-violet-700', border: 'border-violet-200', ring: 'ring-violet-200' },
-            { id: 'peach', name: 'Pêssego', icon: '🍑', bg: 'bg-orange-50', gradient: 'from-orange-50 to-orange-100', accent: 'bg-orange-200', text: 'text-orange-700', border: 'border-orange-200', ring: 'ring-orange-200' },
-            { id: 'hearts', name: 'Corações', icon: '💖', bg: 'bg-pink-50', gradient: 'from-pink-100 to-rose-200', accent: 'bg-pink-300', text: 'text-pink-600', border: 'border-pink-300', ring: 'ring-pink-300' },
-            { id: 'bear', name: 'Ursinho', icon: '🐻', bg: 'bg-amber-50', gradient: 'from-amber-100 to-orange-100', accent: 'bg-amber-200', text: 'text-amber-800', border: 'border-amber-200', ring: 'ring-amber-300' },
+            { id: 'blush', name: 'Blush', icon: '🎀', bg: 'bg-rose-50', gradient: 'from-rose-100 to-rose-200', text: 'text-rose-600', border: 'border-rose-200' },
+            { id: 'babyblue', name: 'Nuvem', icon: '☁️', bg: 'bg-sky-50', gradient: 'from-sky-100 to-sky-200', text: 'text-sky-600', border: 'border-sky-200' },
+            { id: 'lavender', name: 'Sonho', icon: '🦄', bg: 'bg-purple-50', gradient: 'from-purple-100 to-purple-200', text: 'text-purple-600', border: 'border-purple-200' },
+            { id: 'mint', name: 'Chá', icon: '🍵', bg: 'bg-emerald-50', gradient: 'from-emerald-100 to-teal-100', text: 'text-teal-600', border: 'border-emerald-200' },
+            { id: 'lemon', name: 'Sol', icon: '🌻', bg: 'bg-yellow-50', gradient: 'from-yellow-100 to-amber-100', text: 'text-amber-600', border: 'border-yellow-200' },
+            { id: 'peach', name: 'Pêssego', icon: '🍑', bg: 'bg-orange-50', gradient: 'from-orange-100 to-rose-100', text: 'text-orange-600', border: 'border-orange-200' },
+            { id: 'dark', name: 'Lua', icon: '🌙', bg: 'bg-slate-800', gradient: 'from-slate-700 to-slate-900', text: 'text-indigo-200', border: 'border-slate-700', isDark: true },
         ];
 
         const fontOptions = {
-            handwriting: { id: 'handwriting', name: 'Manuscrita', family: '"Caveat", cursive', class: 'font-handwriting' },
-            serif: { id: 'serif', name: 'Clássica', family: '"Merriweather", serif', class: 'font-serif' },
-            sans: { id: 'sans', name: 'Digital', family: '"Nunito", sans-serif', class: 'font-sans' }
+            dancing: { id: 'dancing', name: 'Dancing', family: '"Dancing Script", cursive', class: 'font-dancing' },
+            pacifico: { id: 'pacifico', name: 'Pacifico', family: '"Pacifico", cursive', class: 'font-pacifico' },
+            indie: { id: 'indie', name: 'Indie', family: '"Indie Flower", cursive', class: 'font-indie' },
+            quicksand: { id: 'quicksand', name: 'Quicksand', family: '"Quicksand", sans-serif', class: 'font-ui' },
+            playfair: { id: 'playfair', name: 'Playfair', family: '"Playfair Display", serif', class: 'font-playfair' },
+            handwriting: { id: 'handwriting', name: 'Caveat', family: '"Caveat", cursive', class: 'font-handwriting' },
+            marker: { id: 'marker', name: 'Marker', family: '"Patrick Hand", cursive', class: 'font-marker' },
+            serif: { id: 'serif', name: 'Livro', family: '"Merriweather", serif', class: 'font-serif' },
         };
+
+        const textColors = [
+            { id: 'default', color: '#475569', name: 'Cinza' },
+            { id: 'black', color: '#000000', name: 'Preto' },
+            { id: 'rose', color: '#db2777', name: 'Rosa' },
+            { id: 'purple', color: '#9333ea', name: 'Roxo' },
+            { id: 'blue', color: '#2563eb', name: 'Azul' },
+            { id: 'teal', color: '#0d9488', name: 'Verde' },
+            { id: 'cocoa', color: '#78350f', name: 'Cacau' },
+        ];
 
         const paperStyles = {
             lined: {
-                label: 'Pautado',
+                label: 'Linhas',
+                isDark: false,
                 css: {
-                    backgroundImage: 'linear-gradient(transparent 31px, #bfdbfe 31px)',
-                    backgroundSize: '100% 32px',
-                    lineHeight: '32px',
-                    backgroundAttachment: 'local'
+                    backgroundImage: 'linear-gradient(transparent 35px, #e2e8f0 35px)',
+                    backgroundSize: '100% 36px',
+                    lineHeight: '36px',
+                    backgroundColor: '#ffffff'
                 }
             },
             grid: {
-                label: 'Quadriculado',
+                label: 'Quadros',
+                isDark: false,
                 css: {
-                    backgroundImage: 'linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px)',
-                    backgroundSize: '20px 20px',
-                    lineHeight: '32px',
-                    backgroundAttachment: 'local'
+                    backgroundImage: 'linear-gradient(#f1f5f9 1px, transparent 1px), linear-gradient(90deg, #f1f5f9 1px, transparent 1px)',
+                    backgroundSize: '24px 24px',
+                    lineHeight: '36px',
+                    backgroundColor: '#ffffff'
                 }
             },
-            dotted: {
-                label: 'Pontilhado',
+            dots: {
+                label: 'Pontos',
+                isDark: false,
                 css: {
-                    backgroundImage: 'radial-gradient(#94a3b8 1px, transparent 1px)',
-                    backgroundSize: '20px 20px',
-                    lineHeight: '32px',
-                    backgroundAttachment: 'local'
+                    backgroundImage: 'radial-gradient(#cbd5e1 1.5px, transparent 1.5px)',
+                    backgroundSize: '24px 24px',
+                    lineHeight: '36px',
+                    backgroundColor: '#ffffff'
                 }
             },
-            plain: {
-                label: 'Branco',
+            pink: {
+                label: 'Rosa',
+                isDark: false,
                 css: {
-                    lineHeight: '32px',
-                    backgroundImage: 'none'
+                    backgroundColor: '#fff1f2',
+                    backgroundImage: 'linear-gradient(transparent 35px, #fecdd3 35px)',
+                    backgroundSize: '100% 36px',
+                    lineHeight: '36px'
+                }
+            },
+            cream: {
+                label: 'Creme',
+                isDark: false,
+                css: {
+                    backgroundColor: '#fffbeb',
+                    backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")',
+                    lineHeight: '36px'
                 }
             }
         };
@@ -242,47 +291,49 @@
             activeNoteId: null,
             searchQuery: '',
             viewMode: 'edit',
-            isSidebarOpen: false,
-            isMenuOpen: false,
-
+            enableSpellcheck: true, // Novo estado para o corretor
+            
             init() {
-                // Carregar notas
-                const saved = localStorage.getItem('smart-notebook-html-v1');
+                const saved = localStorage.getItem('smart-notebook-cute-v3');
+                // Carregar preferência do corretor se existir (ou usar true por defeito)
+                const savedSpellcheck = localStorage.getItem('smart-notebook-spellcheck');
+                this.enableSpellcheck = savedSpellcheck !== null ? JSON.parse(savedSpellcheck) : true;
+
                 if (saved) {
                     this.notes = JSON.parse(saved);
                 } else {
                     this.notes = [
                         {
                             id: '1',
-                            title: 'Diário de Gratidão 💖',
-                            content: 'Hoje estou grata por:\n1. O sol quentinho pela manhã\n2. Café com bolo\n3. Ter falado com a avó\n\n"Espalhe amor por onde for."',
-                            tags: ['gratidão', 'amor'],
-                            theme: 'hearts',
-                            paper: 'lined',
-                            font: 'handwriting',
-                            fontSize: 24,
+                            title: 'Meus Sonhos ✨',
+                            content: 'Coisas que quero fazer este ano:\n\n1. Aprender a fazer cookies 🍪\n2. Plantar um jardim 🌸\n3. Ler 12 livros de fantasia\n\n"Acredita na magia dos novos começos."',
+                            tags: ['sonhos', '2025'],
+                            theme: 'blush',
+                            paper: 'pink',
+                            font: 'dancing',
+                            fontSize: 26,
+                            textColor: '#db2777', // Rosa
                             updatedAt: new Date().toISOString(),
                         },
                         {
                             id: '2',
-                            title: 'Lista de Piquenique 🐻',
-                            content: '- Toalha xadrez\n- Sanduíches de mel\n- Sumo de maçã\n- Biscoitos em forma de urso',
-                            tags: ['passeio', 'comida'],
-                            theme: 'bear',
+                            title: 'Ideias de Presentes 🎁',
+                            content: 'Para a mãe: Um colar de prata\nPara o pai: Livro de história\nPara mim: Cadernos novos!',
+                            tags: ['compras', 'amor'],
+                            theme: 'babyblue',
                             paper: 'grid',
-                            font: 'handwriting',
-                            fontSize: 20,
+                            font: 'indie',
+                            fontSize: 22,
+                            textColor: '#475569',
                             updatedAt: new Date(Date.now() - 86400000).toISOString(),
                         }
                     ];
                 }
                 
-                // Definir nota ativa
                 if (this.notes.length > 0) {
                     this.activeNoteId = this.notes[0].id;
                 }
 
-                // Listeners
                 document.getElementById('search-input').addEventListener('input', (e) => {
                     this.searchQuery = e.target.value;
                     this.renderSidebar();
@@ -298,7 +349,6 @@
                     }
                 });
 
-                // Renderizar Inicial
                 this.renderSidebar();
                 this.renderMain();
                 this.renderMenu();
@@ -306,7 +356,7 @@
             },
 
             save() {
-                localStorage.setItem('smart-notebook-html-v1', JSON.stringify(this.notes));
+                localStorage.setItem('smart-notebook-cute-v3', JSON.stringify(this.notes));
             },
 
             addNote() {
@@ -315,10 +365,11 @@
                     title: '',
                     content: '',
                     tags: [],
-                    theme: 'rose',
+                    theme: 'blush',
                     paper: 'lined',
-                    font: 'handwriting',
+                    font: 'quicksand',
                     fontSize: 22,
+                    textColor: '#475569',
                     updatedAt: new Date().toISOString(),
                 };
                 this.notes.unshift(newNote);
@@ -339,18 +390,22 @@
                     note.updatedAt = new Date().toISOString();
                     this.save();
                     
-                    if (key === 'title' || key === 'tags') {
+                    if (key === 'title' || key === 'tags' || key === 'theme') {
                         this.renderSidebar();
                     }
-                    if (key === 'fontSize' || key === 'font' || key === 'paper' || key === 'theme') {
-                        this.renderMain(); // Re-render styles
+                    if (['fontSize', 'font', 'paper', 'textColor', 'theme'].includes(key)) {
+                        this.renderMain();
+                    }
+                    
+                    if (!document.getElementById('appearance-menu').classList.contains('hidden')) {
+                        this.renderMenu();
                     }
                 }
             },
 
             deleteNote(e, id) {
                 e.stopPropagation();
-                if(!confirm("Tem a certeza que deseja apagar esta nota?")) return;
+                if(!confirm("Apagar esta página fofinha? 🥺")) return;
 
                 this.notes = this.notes.filter(n => n.id !== id);
                 if (this.activeNoteId === id) {
@@ -388,11 +443,7 @@
 
             toggleSidebar() {
                 const sidebar = document.getElementById('sidebar');
-                if (sidebar.classList.contains('-translate-x-full')) {
-                    sidebar.classList.remove('-translate-x-full');
-                } else {
-                    sidebar.classList.add('-translate-x-full');
-                }
+                sidebar.classList.toggle('-translate-x-full');
             },
 
             toggleViewMode() {
@@ -404,39 +455,40 @@
                 const menu = document.getElementById('appearance-menu');
                 const btn = document.getElementById('btn-personalizar');
                 
-                if (menu.classList.contains('hidden')) {
-                    menu.classList.remove('hidden');
-                    btn.classList.add('bg-slate-100', 'text-slate-800');
-                    btn.classList.remove('text-slate-500');
-                } else {
-                    menu.classList.add('hidden');
-                    btn.classList.remove('bg-slate-100', 'text-slate-800');
-                    btn.classList.add('text-slate-500');
+                menu.classList.toggle('hidden');
+                btn.classList.toggle('bg-rose-50');
+                
+                if (!menu.classList.contains('hidden')) {
+                    this.renderMenu(); 
                 }
+            },
+
+            toggleSpellcheck() {
+                this.enableSpellcheck = !this.enableSpellcheck;
+                localStorage.setItem('smart-notebook-spellcheck', JSON.stringify(this.enableSpellcheck));
+                this.renderMain();
+                // Atualizar o menu para refletir a mudança visualmente
+                this.renderMenu();
             },
 
             changeFontSize(delta) {
                 const note = this.notes.find(n => n.id === this.activeNoteId);
                 if (note) {
-                    const current = note.fontSize || 18;
-                    const newSize = Math.max(14, Math.min(28, current + delta));
+                    const current = note.fontSize || 22;
+                    const newSize = Math.max(14, Math.min(48, current + delta));
                     this.updateNote('fontSize', newSize);
                 }
             },
-
-            // --- RENDERIZADORES ---
 
             renderSidebar() {
                 const list = document.getElementById('notes-list');
                 const activeTheme = this.getActiveNoteTheme();
                 
-                // Atualizar ícone e cor do header da sidebar
                 const headerIconContainer = document.getElementById('sidebar-icon-container');
                 const appIcon = document.getElementById('app-icon');
                 
                 if(activeTheme) {
-                    // Limpar classes antigas de gradiente
-                    headerIconContainer.className = `w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-sm transform -rotate-3 transition-all duration-500 bg-gradient-to-br ${activeTheme.gradient}`;
+                    headerIconContainer.className = `w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-sm ring-4 ring-white transition-all duration-500 bg-gradient-to-br ${activeTheme.gradient} text-white`;
                     appIcon.textContent = activeTheme.icon;
                 }
 
@@ -448,43 +500,51 @@
                 }).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
                 if (filtered.length === 0) {
-                    list.innerHTML = '<div class="text-center py-10 text-slate-400"><p class="text-sm">Nada encontrado...</p></div>';
+                    list.innerHTML = `
+                        <div class="text-center py-10 text-rose-300 opacity-60">
+                            <i data-lucide="ghost" class="w-8 h-8 mx-auto mb-2"></i>
+                            <p class="text-sm font-medium">Vazio...</p>
+                        </div>
+                    `;
+                    lucide.createIcons();
                     return;
                 }
 
                 filtered.forEach(note => {
-                    const theme = coverThemes.find(t => t.id === (note.theme || 'rose'));
+                    const theme = coverThemes.find(t => t.id === (note.theme || 'blush'));
                     const isActive = note.id === this.activeNoteId;
                     const date = new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'short' }).format(new Date(note.updatedAt));
 
                     const div = document.createElement('div');
-                    div.className = `p-4 rounded-xl cursor-pointer transition-all border-l-4 relative group mb-2 ${
+                    div.className = `p-4 rounded-3xl cursor-pointer transition-all relative group mb-3 border-2 ${
                         isActive 
-                        ? `bg-gradient-to-r ${theme.gradient} border-l-${theme.text.split('-')[1]}-400 shadow-sm` 
-                        : 'bg-white border-l-transparent hover:bg-slate-50'
+                        ? `bg-white border-${theme.text.split('-')[1]}-200 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.1)] scale-[1.02]` 
+                        : 'bg-white/50 border-transparent hover:bg-white hover:border-rose-100 hover:scale-[1.01]'
                     }`;
                     div.onclick = () => this.selectNote(note.id);
 
                     div.innerHTML = `
-                        <div class="flex justify-between items-start mb-1">
-                            <h3 class="font-bold text-sm line-clamp-1 ${isActive ? 'text-slate-800' : 'text-slate-700'}">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-sm line-clamp-1 font-ui ${isActive ? 'text-slate-800' : 'text-slate-600'}">
                                 ${theme.icon} ${note.title || 'Sem título'}
                             </h3>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isActive ? 'bg-white/50 text-slate-600' : 'text-slate-400'}">
+                            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${isActive ? 'bg-rose-100 text-rose-500' : 'text-slate-300'}">
                                 ${date}
                             </span>
                         </div>
-                        <p class="text-xs line-clamp-2 mb-2 leading-relaxed ${isActive ? 'text-slate-600' : 'text-slate-400'}">
-                            ${note.content || 'Página em branco...'}
+                        <p class="text-xs line-clamp-2 mb-3 leading-relaxed font-ui ${isActive ? 'text-slate-500' : 'text-slate-400'}">
+                            ${note.content || '...'}
                         </p>
-                        <div class="flex flex-wrap gap-1">
-                            ${note.tags.slice(0, 3).map(tag => `
-                                <span class="text-[10px] px-1.5 py-0.5 rounded text-slate-500 ${isActive ? 'bg-white/40' : 'bg-slate-100'}">#${tag}</span>
-                            `).join('')}
+                        <div class="flex items-center justify-between">
+                            <div class="flex flex-wrap gap-1">
+                                ${note.tags.slice(0, 2).map(tag => `
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full font-bold text-slate-400 bg-slate-100/50">#${tag}</span>
+                                `).join('')}
+                            </div>
+                            <button onclick="app.deleteNote(event, '${note.id}')" class="p-1.5 rounded-full text-rose-300 hover:text-rose-500 hover:bg-rose-50 opacity-0 group-hover:opacity-100 transition-all">
+                                <i data-lucide="trash-2" class="w-3 h-3"></i>
+                            </button>
                         </div>
-                        <button onclick="app.deleteNote(event, '${note.id}')" class="absolute right-2 bottom-2 p-1.5 rounded-full text-slate-400 hover:text-rose-500 hover:bg-white/50 opacity-0 group-hover:opacity-100 transition-all">
-                            <i data-lucide="trash-2" class="w-3 h-3"></i>
-                        </button>
                     `;
                     list.appendChild(div);
                 });
@@ -507,71 +567,73 @@
 
                 // Aplicar Dados
                 document.getElementById('note-title').value = note.title;
-                document.getElementById('last-updated').innerText = new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'short' }).format(new Date(note.updatedAt));
+                document.getElementById('last-updated').innerText = new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'short', hour:'2-digit', minute:'2-digit' }).format(new Date(note.updatedAt));
                 
-                // Aplicar Temas e Estilos
-                const theme = coverThemes.find(t => t.id === (note.theme || 'rose'));
+                const theme = coverThemes.find(t => t.id === (note.theme || 'blush'));
                 const paper = paperStyles[note.paper || 'lined'];
-                const font = fontOptions[note.font || 'handwriting'];
+                const font = fontOptions[note.font || 'quicksand'];
                 const fontSize = note.fontSize || 22;
+                const textColor = note.textColor || '#475569';
 
-                // Border do papel
-                const paperSheet = document.getElementById('paper-sheet');
-                paperSheet.className = `flex-1 flex flex-col bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-visible transition-all duration-500 border-l-[12px] relative ${theme.border}`;
-
-                // Toolbar Icons
-                document.getElementById('toolbar-icon-bg').className = `w-8 h-8 rounded-full flex items-center justify-center text-lg shadow-inner ${theme.bg}`;
+                // Icons Toolbar
+                const toolbarIconBg = document.getElementById('toolbar-icon-bg');
+                toolbarIconBg.className = `w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shadow-sm ring-4 ring-white transition-all bg-gradient-to-br ${theme.gradient} text-white`;
                 document.getElementById('toolbar-icon').innerText = theme.icon;
                 document.getElementById('paper-label').innerText = paper.label;
 
-                // Botão View Mode
-                const btnView = document.getElementById('btn-view-mode');
-                if (this.viewMode === 'edit') {
-                    btnView.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
-                    btnView.className = 'p-2 rounded-xl transition-all bg-slate-800 text-white shadow-lg shadow-slate-200';
-                } else {
-                    btnView.innerHTML = '<i data-lucide="edit-3" class="w-4 h-4"></i>';
-                    btnView.className = 'p-2 rounded-xl transition-all bg-white text-slate-500 hover:bg-slate-50 border border-slate-200';
-                }
-
                 // Margem
                 const margin = document.getElementById('margin-line');
-                margin.style.display = (note.paper === 'lined' || note.paper === 'plain') ? 'block' : 'none';
+                margin.style.display = (note.paper === 'lined' || note.paper === 'pink') ? 'block' : 'none';
 
-                // Input Title Fonte
-                document.getElementById('note-title').style.fontFamily = font.family;
-
-                // Content Area (Textarea vs Preview)
+                // Content Area
                 const textarea = document.getElementById('note-content');
                 const preview = document.getElementById('note-preview');
                 const tagWrapper = document.getElementById('add-tag-wrapper');
+                const titleInput = document.getElementById('note-title');
 
-                // Estilos comuns
-                const commonStyles = {
+                // Aplicar definição do corretor
+                textarea.spellcheck = this.enableSpellcheck;
+
+                // Reset function to clear previous styles
+                const resetBackground = (el) => {
+                    el.style.backgroundImage = '';
+                    el.style.backgroundColor = '';
+                    el.style.backgroundSize = '';
+                    el.style.backgroundAttachment = '';
+                };
+
+                // Aplicar estilos dinâmicos
+                const styles = {
                     fontFamily: font.family,
                     fontSize: `${fontSize}px`,
+                    color: textColor,
                     ...paper.css
                 };
 
-                // Aplicar CSS Object to Style String
                 const applyStyles = (el) => {
-                    Object.assign(el.style, commonStyles);
+                    resetBackground(el);
+                    Object.assign(el.style, styles);
                 };
+                
+                titleInput.style.fontFamily = font.family;
+                titleInput.style.color = textColor;
 
                 if (this.viewMode === 'edit') {
                     textarea.value = note.content;
                     textarea.classList.remove('hidden');
                     preview.classList.add('hidden');
                     tagWrapper.classList.remove('hidden');
-                    document.getElementById('note-title').disabled = false;
+                    titleInput.disabled = false;
                     applyStyles(textarea);
+                    document.getElementById('btn-view-mode').innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
                 } else {
-                    preview.innerText = note.content; // Simples text render, poderia ser markdown
+                    preview.innerText = note.content;
                     textarea.classList.add('hidden');
                     preview.classList.remove('hidden');
                     tagWrapper.classList.add('hidden');
-                    document.getElementById('note-title').disabled = true;
+                    titleInput.disabled = true;
                     applyStyles(preview);
+                    document.getElementById('btn-view-mode').innerHTML = '<i data-lucide="pencil" class="w-4 h-4"></i>';
                 }
 
                 this.renderTags();
@@ -581,14 +643,14 @@
             renderTags() {
                 const container = document.getElementById('tags-container');
                 const note = this.notes.find(n => n.id === this.activeNoteId);
-                const theme = coverThemes.find(t => t.id === (note?.theme || 'rose'));
+                const theme = coverThemes.find(t => t.id === (note?.theme || 'blush'));
                 
                 container.innerHTML = '';
                 
                 if (note) {
                     note.tags.forEach(tag => {
                         const span = document.createElement('span');
-                        span.className = `inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${theme.bg} ${theme.text} cursor-pointer hover:bg-red-50 hover:text-red-500 transition-colors border border-transparent hover:border-red-100`;
+                        span.className = `inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-rose-500 bg-rose-50 cursor-pointer hover:bg-rose-100 transition-colors border-2 border-rose-100 hover:border-rose-200`;
                         span.innerText = `#${tag}`;
                         span.onclick = () => this.removeTag(tag);
                         container.appendChild(span);
@@ -598,79 +660,109 @@
 
             renderMenu() {
                 const menu = document.getElementById('appearance-menu');
-                // Seção Temas
-                let html = `
-                    <div class="mb-5">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 block flex items-center gap-2">
-                             <div class="w-full h-px bg-slate-100"></div> Tema & Capa <div class="w-full h-px bg-slate-100"></div>
-                        </span>
-                        <div class="grid grid-cols-5 gap-2">
+                const note = this.notes.find(n => n.id === this.activeNoteId);
+                if (!note) return;
+
+                const sectionTitle = (text) => `
+                    <div class="flex items-center gap-2 mb-3 mt-1">
+                        <span class="text-[10px] font-bold text-rose-300 uppercase tracking-widest">${text}</span>
+                        <div class="h-px bg-rose-100 flex-1"></div>
+                    </div>
                 `;
-                
+
+                // 1. Temas
+                let html = sectionTitle('Capa & Tema');
+                html += '<div class="flex gap-2 mb-5 overflow-x-auto pb-2 no-scrollbar">';
                 coverThemes.forEach(t => {
+                    const isSelected = note.theme === t.id;
                     html += `
                         <button onclick="app.updateNote('theme', '${t.id}')" 
-                            class="w-10 h-10 rounded-full transition-all flex items-center justify-center text-lg bg-gradient-to-br ${t.gradient} hover:scale-110 hover:shadow-sm opacity-80 hover:opacity-100" 
+                            class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-sm transition-all bg-gradient-to-br ${t.gradient} ${isSelected ? 'ring-2 ring-offset-2 ring-rose-300 scale-110' : 'opacity-70 hover:opacity-100 hover:scale-105'} text-white shadow-sm" 
                             title="${t.name}">
                             ${t.icon}
                         </button>
                     `;
                 });
+                html += '</div>';
 
-                html += `</div></div>`;
-
-                // Seção Papel
-                html += `
-                    <div class="mb-5">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 block flex items-center gap-2">
-                             <div class="w-full h-px bg-slate-100"></div> Papel <div class="w-full h-px bg-slate-100"></div>
-                        </span>
-                        <div class="grid grid-cols-2 gap-2">
-                `;
-
+                // 2. Papel
+                html += sectionTitle('Papel');
+                html += '<div class="grid grid-cols-2 gap-2 mb-5">';
                 for (const [key, style] of Object.entries(paperStyles)) {
+                    const isSelected = note.paper === key;
                     html += `
                         <button onclick="app.updateNote('paper', '${key}')" 
-                            class="text-xs py-2 px-3 rounded-lg border transition-all flex items-center justify-center gap-2 border-slate-100 text-slate-500 hover:bg-slate-50">
-                            ${key === 'lined' ? '<i data-lucide="align-left" class="w-3 h-3"></i>' : ''} ${style.label}
+                            class="text-xs font-bold py-2 px-3 rounded-xl border-2 transition-all flex items-center justify-center gap-2 ${isSelected ? 'border-rose-300 bg-rose-50 text-rose-600' : 'border-slate-100 text-slate-400 hover:border-rose-100 hover:text-slate-500'}">
+                            ${style.label}
                         </button>
                     `;
                 }
+                html += '</div>';
 
-                html += `</div></div>`;
-
-                // Seção Texto
-                html += `
-                    <div>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 block flex items-center gap-2">
-                             <div class="w-full h-px bg-slate-100"></div> Texto <div class="w-full h-px bg-slate-100"></div>
-                        </span>
-                        <div class="flex bg-slate-100 p-1 rounded-lg mb-3">
-                `;
-
+                // 3. Fonte Familia
+                html += sectionTitle('Tipografia');
+                html += '<div class="grid grid-cols-2 gap-2 mb-3">';
                 for (const [key, font] of Object.entries(fontOptions)) {
+                    const isSelected = note.font === key;
                     html += `
                         <button onclick="app.updateNote('font', '${key}')" 
-                            class="flex-1 py-1.5 text-xs rounded-md transition-all text-slate-500 hover:text-slate-700" 
-                            style="font-family: ${font.family}">Aa</button>
+                            class="text-sm py-1.5 rounded-lg transition-all ${isSelected ? 'bg-rose-500 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'}" 
+                            style="font-family: ${font.family}">
+                            ${font.name}
+                        </button>
                     `;
                 }
+                html += '</div>';
 
-                html += `</div>
-                        <div class="flex items-center justify-between bg-slate-50 rounded-lg p-2 border border-slate-100">
-                            <button onclick="app.changeFontSize(-2)" class="p-1 hover:bg-white rounded hover:shadow-sm text-slate-500"><i data-lucide="minus" class="w-3 h-3"></i></button>
-                            <span class="text-xs font-medium text-slate-600 w-12 text-center">Tamanho</span>
-                            <button onclick="app.changeFontSize(2)" class="p-1 hover:bg-white rounded hover:shadow-sm text-slate-500"><i data-lucide="plus" class="w-3 h-3"></i></button>
-                        </div>
+                // 4. Cores e Tamanho
+                html += '<div class="flex items-center justify-between gap-4 mb-4">';
+                
+                // Cores
+                html += '<div class="flex gap-1">';
+                textColors.forEach(c => {
+                   const isSelected = (note.textColor || '#475569') === c.color;
+                   html += `
+                        <button onclick="app.updateNote('textColor', '${c.color}')"
+                            class="w-5 h-5 rounded-full border border-slate-100 ${isSelected ? 'ring-2 ring-offset-1 ring-slate-300' : 'hover:scale-110'}"
+                            style="background-color: ${c.color}"
+                            title="${c.name}"
+                        ></button>
+                   `; 
+                });
+                html += '</div>';
+
+                // Tamanho
+                html += `
+                    <div class="flex items-center bg-slate-50 rounded-lg p-1 border border-slate-100">
+                        <button onclick="app.changeFontSize(-2)" class="w-6 h-6 flex items-center justify-center hover:bg-white rounded text-slate-400 hover:text-rose-500"><i data-lucide="minus" class="w-3 h-3"></i></button>
+                        <span class="text-xs font-bold text-slate-600 w-6 text-center">${note.fontSize || 22}</span>
+                        <button onclick="app.changeFontSize(2)" class="w-6 h-6 flex items-center justify-center hover:bg-white rounded text-slate-400 hover:text-rose-500"><i data-lucide="plus" class="w-3 h-3"></i></button>
+                    </div>
+                `;
+                html += '</div>';
+
+                // 5. Corretor
+                html += `
+                    <div class="pt-2 border-t border-rose-50">
+                        <button onclick="app.toggleSpellcheck()" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-rose-50 transition-colors group">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="${this.enableSpellcheck ? 'check-circle-2' : 'circle'}" class="w-4 h-4 ${this.enableSpellcheck ? 'text-green-500' : 'text-slate-300'}"></i>
+                                <span class="text-xs font-bold text-slate-500 group-hover:text-rose-500">Corretor Ortográfico</span>
+                            </div>
+                            <span class="text-[10px] font-bold ${this.enableSpellcheck ? 'text-green-500 bg-green-50' : 'text-slate-400 bg-slate-100'} px-2 py-0.5 rounded-full">
+                                ${this.enableSpellcheck ? 'LIGADO' : 'DESLIGADO'}
+                            </span>
+                        </button>
                     </div>
                 `;
 
                 menu.innerHTML = html;
+                lucide.createIcons();
             },
 
             getActiveNoteTheme() {
                 const note = this.notes.find(n => n.id === this.activeNoteId);
-                return note ? coverThemes.find(t => t.id === (note.theme || 'rose')) : null;
+                return note ? coverThemes.find(t => t.id === (note.theme || 'blush')) : null;
             }
         };
 
