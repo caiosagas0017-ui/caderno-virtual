@@ -12,28 +12,19 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Google Fonts (Atualizado com fontes mais bonitas) -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Dancing+Script:wght@400;700&family=Pacifico&family=Indie+Flower&family=Sacramento&family=Satisfy&family=Kalam:wght@300;400;700&family=Amatic+SC:wght@400;700&family=Shadows+Into+Light&family=Gloria+Hallelujah&family=Great+Vibes&family=Handlee&family=Mali:wght@400;500;600&family=Courgette&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Nunito:wght@400;600;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Dancing+Script:wght@400;700&family=Pacifico&family=Indie+Flower&family=Sacramento&family=Satisfy&family=Kalam:wght@300;400;700&family=Amatic+SC:wght@400;700&family=Shadows+Into+Light&family=Gloria+Hallelujah&family=Great+Vibes&family=Handlee&family=Mali:wght@400;500;600&family=Courgette&display=swap" rel="stylesheet">
 
     <style>
         /* Fontes */
         .font-ui { font-family: 'Quicksand', sans-serif; }
-        
-        /* Classes utilitárias de fontes para referência */
+        .font-serif { font-family: 'Merriweather', serif; }
+        .font-sans { font-family: 'Nunito', sans-serif; }
         .font-handwriting { font-family: 'Caveat', cursive; }
         .font-marker { font-family: 'Patrick Hand', cursive; }
         .font-dancing { font-family: 'Dancing Script', cursive; }
         .font-pacifico { font-family: 'Pacifico', cursive; }
         .font-indie { font-family: 'Indie Flower', cursive; }
-        .font-sacramento { font-family: 'Sacramento', cursive; }
-        .font-satisfy { font-family: 'Satisfy', cursive; }
-        .font-kalam { font-family: 'Kalam', cursive; }
-        .font-amatic { font-family: 'Amatic SC', cursive; }
-        .font-shadows { font-family: 'Shadows Into Light', cursive; }
-        .font-gloria { font-family: 'Gloria Hallelujah', cursive; }
-        .font-vibes { font-family: 'Great Vibes', cursive; }
-        .font-handlee { font-family: 'Handlee', cursive; }
-        .font-mali { font-family: 'Mali', cursive; }
-        .font-courgette { font-family: 'Courgette', cursive; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
 
         /* Background Base */
         body {
@@ -297,12 +288,12 @@
         ];
 
         const stickers = {
-            flowers: ['🌸', '🌼', '🌻', '🌹', '🌷', '💐', '🌺', '🍃'],
-            sky: ['⭐', '🌟', '✨', '🌙', '☀️', '⛅', '🌈', '☁️'],
-            cute: ['💖', '💜', '💌', '🎀', '🧸', '🎈', '🎨', '🎉'],
-            animals: ['🐱', '🐶', '🐰', '🐸', '🦋', '🐝', '🐞', '🦄'],
-            food: ['🍓', '🍑', '🍒', '🍪', '🍩', '🍰', '🧁', '🍦'],
-            stationery: ['📌', '📍', '📎', '🖍️', '🖊️', '✂️', '📏', '📔']
+            botanica: ['🌸', '🌼', '🌻', '🌹', '🌷', '💐', '🌺', '🍃', '🏵️', '💮', '🪷', '🌾', '🌿', '🌱', '🪴', '🍁', '🍂', '🍄'],
+            ceu: ['⭐', '🌟', '✨', '🌙', '☀️', '⛅', '🌈', '☁️', '🪐', '☄️', '🌥️', '🌩️', '🌌', '⚡', '❄️'],
+            fofura: ['💖', '💜', '💌', '🎀', '🧸', '🎈', '🎨', '🎉', '🩰', '🦢', '🕯️', '🪞', '🧵', '🧶', '🤍', '🍬', '🛁', '🫧'],
+            bichinhos: ['🐱', '🐶', '🐰', '🐸', '🦋', '🐝', '🐞', '🦄', '🕊️', '🐿️', '🦔', '🦌', '🐥', '🐣', '🦀', '🦊', '🐨', '🐼'],
+            lanchinho: ['🍓', '🍑', '🍒', '🍪', '🍩', '🍰', '🧁', '🍦', '🥞', '🧇', '🥐', '🍯', '🍵', '🧉', '🍱', '🍙', '🍡', '🍮'],
+            estudos: ['📌', '📍', '📎', '🖍️', '🖊️', '✂️', '📏', '📔', '📚', '📖', '🔖', '📝', '📂', '📅', '💻', '💡', '🔍']
         };
 
         const paperStyles = {
@@ -584,17 +575,19 @@
             removeTag(tag) { const note = this.notes.find(n => n.id === this.activeNoteId); if (note) { this.updateNote('tags', note.tags.filter(t => t !== tag)); this.renderTags(); } },
             toggleViewMode() { this.viewMode = this.viewMode === 'edit' ? 'preview' : 'edit'; this.renderMain(); },
             toggleAppearanceMenu() { const menu = document.getElementById('appearance-menu'); document.getElementById('btn-personalizar').classList.toggle('bg-slate-100'); menu.classList.toggle('hidden'); if (!menu.classList.contains('hidden')) this.renderMenu(); },
+            
             toggleSpellcheck() { 
                 this.enableSpellcheck = !this.enableSpellcheck; 
                 localStorage.setItem('smart-notebook-spellcheck', JSON.stringify(this.enableSpellcheck)); 
-                // Atualiza o atributo no DOM imediatamente
+                
                 const editor = document.getElementById('note-content');
                 if (editor) {
-                    // contenteditable usa o atributo 'spellcheck' como string "true" ou "false"
+                    editor.spellcheck = this.enableSpellcheck;
                     editor.setAttribute('spellcheck', this.enableSpellcheck.toString());
                 }
-                this.renderMenu(); // Atualiza UI do menu
+                this.renderMenu(); 
             },
+            
             changeFontSize(delta) { const note = this.notes.find(n => n.id === this.activeNoteId); if (note) this.updateNote('fontSize', Math.max(14, Math.min(48, (note.fontSize || 22) + delta))); },
             renderSidebar() {
                 const list = document.getElementById('notes-list'); const activeTheme = this.getActiveNoteTheme();
@@ -640,6 +633,7 @@
                 const titleInput = document.getElementById('note-title');
                 
                 // Força o spellcheck no elemento
+                editor.spellcheck = this.enableSpellcheck;
                 editor.setAttribute('spellcheck', this.enableSpellcheck.toString());
                 
                 const resetBackground = (el) => { el.style.backgroundImage = ''; el.style.backgroundColor = ''; el.style.backgroundSize = ''; el.style.backgroundAttachment = ''; };
