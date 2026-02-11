@@ -11,113 +11,160 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Nunito:wght@400;600;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Dancing+Script:wght@400;700&family=Pacifico&family=Indie+Flower&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Google Fonts (Atualizado com fontes mais bonitas) -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Dancing+Script:wght@400;700&family=Pacifico&family=Indie+Flower&family=Sacramento&family=Satisfy&family=Kalam:wght@300;400;700&family=Amatic+SC:wght@400;700&family=Shadows+Into+Light&family=Gloria+Hallelujah&family=Great+Vibes&family=Handlee&family=Mali:wght@400;500;600&family=Courgette&display=swap" rel="stylesheet">
 
     <style>
         /* Fontes */
         .font-ui { font-family: 'Quicksand', sans-serif; }
-        .font-serif { font-family: 'Merriweather', serif; }
-        .font-sans { font-family: 'Nunito', sans-serif; }
+        
+        /* Classes utilitárias de fontes para referência */
         .font-handwriting { font-family: 'Caveat', cursive; }
         .font-marker { font-family: 'Patrick Hand', cursive; }
         .font-dancing { font-family: 'Dancing Script', cursive; }
         .font-pacifico { font-family: 'Pacifico', cursive; }
         .font-indie { font-family: 'Indie Flower', cursive; }
-        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-sacramento { font-family: 'Sacramento', cursive; }
+        .font-satisfy { font-family: 'Satisfy', cursive; }
+        .font-kalam { font-family: 'Kalam', cursive; }
+        .font-amatic { font-family: 'Amatic SC', cursive; }
+        .font-shadows { font-family: 'Shadows Into Light', cursive; }
+        .font-gloria { font-family: 'Gloria Hallelujah', cursive; }
+        .font-vibes { font-family: 'Great Vibes', cursive; }
+        .font-handlee { font-family: 'Handlee', cursive; }
+        .font-mali { font-family: 'Mali', cursive; }
+        .font-courgette { font-family: 'Courgette', cursive; }
 
-        /* Background Base (Fallback) */
+        /* Background Base */
         body {
-            background-color: #fecdd3; /* Rose 200 Inicial */
+            background-color: #fecdd3;
             background-image: radial-gradient(#fb7185 1.5px, transparent 1.5px), radial-gradient(#fb7185 1.5px, transparent 1.5px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
-            transition: background-color 0.5s ease, background-image 0.5s ease; /* Transição suave */
+            transition: background-color 0.5s ease, background-image 0.5s ease;
         }
 
-        /* Scrollbar Cute */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.5); border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.2); }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.8); }
+
+        [contenteditable]:empty:before { content: attr(placeholder); color: rgba(0,0,0, 0.3); cursor: text; display: block; }
+
+        /* Imagens */
+        #note-content img { 
+            max-width: 100%; 
+            height: auto; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            margin: 10px 0; 
+            display: block; 
+            cursor: pointer;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
+        
+        /* Overlay de Redimensionamento */
+        #resize-overlay {
+            position: absolute;
+            border: 2px solid #3b82f6;
+            pointer-events: none;
+            display: none;
+            z-index: 50;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.5);
+            transition: top 0.05s, left 0.05s, width 0.05s, height 0.05s;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(255, 255, 255, 0.8);
+
+        .resize-handle {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background-color: #3b82f6;
+            border: 2px solid white;
+            border-radius: 50%;
+            bottom: -7px;
+            right: -7px;
+            cursor: nwse-resize;
+            pointer-events: auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         /* Animações */
-        @keyframes popIn {
-            0% { transform: scale(0.95); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pop {
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        @keyframes popIn { 0% { transform: scale(0.95) translateY(-10px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+        .animate-pop { animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Transição Suave da Sidebar */
+        #sidebar {
+            transition: width 0.3s ease, padding 0.3s ease, transform 0.3s ease;
         }
     </style>
 </head>
 <body class="overflow-hidden h-screen w-full flex font-ui text-slate-600">
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-full md:w-80 flex-shrink-0 flex flex-col bg-white/80 backdrop-blur-xl border-r-4 border-white/50 shadow-[4px_0_24px_rgba(0,0,0,0.05)] z-30 h-full absolute md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-300 rounded-r-[3rem] my-2 md:my-0">
-        
-        <!-- Header Sidebar -->
-        <div class="p-6 pb-2">
-            <div class="flex items-center gap-4 mb-6">
-                <div id="sidebar-icon-container" class="w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-sm ring-4 ring-rose-50 bg-rose-100 text-rose-500 transition-all duration-500 hover:rotate-12">
-                    <span id="app-icon">🎀</span>
+    <aside id="sidebar" class="w-full md:w-80 flex-shrink-0 flex flex-col bg-white/80 backdrop-blur-xl border-r-4 border-white/50 shadow-[4px_0_24px_rgba(0,0,0,0.05)] z-30 h-full absolute md:relative transform -translate-x-full md:translate-x-0 rounded-r-[3rem] my-2 md:my-0 overflow-hidden whitespace-nowrap">
+        <div class="p-6 pb-2 flex-shrink-0">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-4">
+                    <div id="sidebar-icon-container" class="w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-sm ring-4 ring-rose-50 bg-rose-100 text-rose-500 transition-all duration-500 hover:rotate-12 flex-shrink-0">
+                        <span id="app-icon">🎀</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-pacifico text-slate-700 tracking-wide">Diário</h1>
+                        <span class="text-xs font-bold tracking-widest uppercase text-white bg-rose-400 px-2 py-1 rounded-full shadow-sm">Secret</span>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-2xl font-pacifico text-slate-700 tracking-wide">Diário</h1>
-                    <span class="text-xs font-bold tracking-widest uppercase text-white bg-rose-400 px-2 py-1 rounded-full shadow-sm">Secret</span>
-                </div>
+                <button onclick="app.toggleSidebar()" class="p-2 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-white transition-all shadow-sm hidden md:block" title="Minimizar Menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <button onclick="app.toggleSidebar()" class="p-2 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-white transition-all shadow-sm md:hidden">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
             </div>
-
-            <!-- Search -->
             <div class="relative mb-4 group">
                 <i data-lucide="search" class="absolute left-4 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-rose-500 transition-colors"></i>
-                <input type="text" id="search-input" placeholder="Procurar memórias..." 
-                    class="w-full pl-11 pr-4 py-3 bg-white/60 border-2 border-transparent hover:border-rose-200 focus:border-rose-300 rounded-2xl text-sm text-slate-600 placeholder-slate-400 focus:ring-0 transition-all outline-none font-medium">
+                <input type="text" id="search-input" placeholder="Procurar memórias..." class="w-full pl-11 pr-4 py-3 bg-white/60 border-2 border-transparent hover:border-rose-200 focus:border-rose-300 rounded-2xl text-sm text-slate-600 placeholder-slate-400 focus:ring-0 transition-all outline-none font-medium">
             </div>
-
             <button onclick="app.addNote()" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-slate-300 hover:shadow-xl hover:shadow-slate-400 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 group">
                 <i data-lucide="sparkles" class="w-4 h-4 animate-pulse"></i>
                 <span class="font-bold text-sm tracking-wide font-ui">Nova Página</span>
             </button>
         </div>
-
-        <!-- Lista de Notas -->
-        <div id="notes-list" class="flex-1 overflow-y-auto px-4 pb-2 space-y-3 custom-scrollbar pt-2">
-            <!-- As notas serão inseridas aqui via JS -->
-        </div>
-
-        <!-- Backup Footer -->
-        <div class="p-4 mt-auto border-t border-rose-100/50 bg-white/30 backdrop-blur-sm mx-4 mb-4 rounded-2xl">
-            <button onclick="app.openBackupModal()" class="w-full py-2.5 px-4 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-white transition-all flex items-center justify-center gap-2 text-sm font-bold shadow-sm border border-transparent hover:border-rose-100 hover:shadow-md group">
-                <i data-lucide="save" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
-                Backup & Restaurar
-            </button>
-        </div>
         
+        <div id="notes-list" class="flex-1 overflow-y-auto px-4 pb-4 space-y-3 custom-scrollbar pt-2"></div>
+        
+        <!-- Área de Backup e Dados -->
+        <div class="mt-auto p-6 border-t border-white/50">
+            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Dados & Segurança</h3>
+            <div class="flex gap-2">
+                <button onclick="app.downloadBackup()" class="flex-1 py-2 bg-white/60 hover:bg-white text-slate-500 hover:text-rose-500 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2" title="Guardar no computador">
+                    <i data-lucide="download" class="w-4 h-4"></i> Backup
+                </button>
+                <button onclick="document.getElementById('backup-input').click()" class="flex-1 py-2 bg-white/60 hover:bg-white text-slate-500 hover:text-rose-500 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2" title="Carregar ficheiro">
+                    <i data-lucide="upload" class="w-4 h-4"></i> Restaurar
+                </button>
+                <!-- Input invisível para upload -->
+                <input type="file" id="backup-input" class="hidden" accept=".json" onchange="app.restoreBackup(this)">
+            </div>
+        </div>
     </aside>
 
     <!-- Área Principal -->
     <main class="flex-1 flex flex-col h-full relative w-full overflow-hidden">
-        
-        <!-- Mobile Header Toggle -->
+        <div id="main-menu-btn" class="hidden absolute top-4 left-4 z-50 animate-pop">
+            <button onclick="app.toggleSidebar()" class="bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-lg text-slate-500 hover:text-rose-500 border border-white/50 transition-all hover:scale-105 group">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+                <span class="absolute left-full ml-2 bg-slate-800 text-white text-xs px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Abrir Menu</span>
+            </button>
+        </div>
         <div class="md:hidden p-4 flex items-center gap-3 bg-white/60 backdrop-blur-md z-20 sticky top-0">
             <button onclick="app.toggleSidebar()" class="text-slate-600 hover:text-rose-600 transition-colors p-2 bg-white rounded-full shadow-sm">
                 <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
             <span class="font-pacifico text-xl text-slate-700">Meu Diário</span>
         </div>
-
-        <!-- Container Vazio -->
         <div id="empty-state" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center opacity-90 h-full animate-pop">
             <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.1)] mb-6 ring-8 ring-white/50">
                 <span class="text-6xl">🧸</span>
@@ -125,16 +172,9 @@
             <h2 class="text-3xl font-pacifico text-white drop-shadow-md mb-3">Olá, sonhador(a)!</h2>
             <p class="text-slate-700 max-w-xs font-bold bg-white/80 px-4 py-2 rounded-xl shadow-sm">Escolhe uma página ao lado para escreveres os teus pensamentos.</p>
         </div>
-
-        <!-- Editor Container -->
         <div id="editor-container" class="flex-1 flex flex-col h-full max-w-5xl mx-auto w-full p-2 md:p-6 lg:p-8 transition-all duration-500">
-            
-            <!-- Folha de Papel -->
             <div id="paper-sheet" class="flex-1 flex flex-col bg-white rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] overflow-hidden transition-all duration-500 relative ring-8 ring-white/40">
-                
-                <!-- Toolbar Flutuante -->
                 <div id="toolbar" class="px-6 py-4 flex flex-wrap items-center justify-between gap-4 border-b border-rose-100 bg-white/95 backdrop-blur-sm z-20 sticky top-0">
-                    
                     <div class="flex items-center gap-4">
                         <div id="toolbar-icon-bg" class="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shadow-sm ring-4 ring-rose-50 transition-colors bg-rose-100 text-rose-500">
                             <span id="toolbar-icon">🌸</span>
@@ -147,157 +187,102 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl">
-                        <!-- Menu Personalizar -->
+                    <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl relative">
                         <div class="relative">
-                            <button onclick="app.toggleAppearanceMenu()" id="btn-personalizar" class="px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500 hover:bg-white hover:text-rose-500 hover:shadow-sm">
+                            <button onclick="app.toggleAppearanceMenu()" onmousedown="event.preventDefault()" id="btn-personalizar" class="px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500 hover:bg-white hover:text-rose-500 hover:shadow-sm active:scale-95">
                                 <i data-lucide="palette" class="w-4 h-4"></i>
-                                <span class="hidden sm:inline">Decorar</span>
+                                <span class="hidden sm:inline">Estilo</span>
                             </button>
-                            
-                            <!-- Popover Menu Moderno -->
-                            <div id="appearance-menu" class="hidden absolute right-0 top-full mt-4 w-80 bg-white rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] border-2 border-slate-100 p-6 z-50 animate-pop">
-                                <!-- Preenchido via JS -->
-                            </div>
+                            <div id="appearance-menu" class="hidden absolute right-0 top-full mt-4 w-96 bg-white/95 backdrop-blur-xl rounded-3xl shadow-[0_20px_60px_-10px_rgba(0,0,0,0.15)] ring-1 ring-slate-100 p-0 z-50 animate-pop overflow-hidden origin-top-right"></div>
                         </div>
-
                         <div class="h-5 w-px bg-slate-200 mx-1"></div>
-
-                        <button onclick="app.toggleViewMode()" id="btn-view-mode" class="p-2 rounded-xl transition-all bg-white text-slate-400 hover:text-rose-500 shadow-sm border border-slate-100 hover:border-rose-200">
+                        <button onclick="app.toggleViewMode()" onmousedown="event.preventDefault()" id="btn-view-mode" class="p-2 rounded-xl transition-all bg-white text-slate-400 hover:text-rose-500 shadow-sm border border-slate-100 hover:border-rose-200">
                             <i data-lucide="eye" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
-
-                <!-- Área de Conteúdo -->
+                
                 <div class="flex-1 overflow-y-auto relative custom-scrollbar bg-local" id="paper-content-area">
-                    
-                    <!-- Linha Vertical (Margem) -->
                     <div id="margin-line" class="absolute left-10 md:left-20 top-0 bottom-0 w-px bg-rose-200/50 z-0 h-full pointer-events-none"></div>
+                    
+                    <!-- Resize Overlay -->
+                    <div id="resize-overlay">
+                        <div class="resize-handle" onmousedown="app.startResize(event)"></div>
+                    </div>
 
                     <div class="max-w-3xl mx-auto min-h-full flex flex-col relative z-10">
-                        
-                        <!-- Cabeçalho Nota -->
                         <div class="px-10 md:px-12 pt-10 pb-6">
                             <input type="text" id="note-title" placeholder="Título Mágico..." class="w-full text-4xl font-bold bg-transparent border-none focus:ring-0 placeholder-rose-200 text-slate-700 px-0 outline-none transition-colors duration-300 font-dancing">
-                            
                             <div class="mt-6 flex flex-wrap gap-2 items-center">
                                 <div id="tags-container" class="flex flex-wrap gap-2"></div>
-                                
                                 <div id="add-tag-wrapper" class="flex items-center gap-2 group ml-1 bg-white/50 px-3 py-1 rounded-full border border-transparent hover:border-rose-200 transition-all cursor-text" onclick="document.getElementById('tag-input').focus()">
                                     <i data-lucide="tag" class="w-3 h-3 text-rose-300"></i>
                                     <input type="text" id="tag-input" placeholder="Etiqueta..." class="bg-transparent text-xs font-bold text-rose-500 placeholder-rose-300 focus:outline-none min-w-[60px]">
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Editor -->
                         <div class="flex-1 px-10 md:px-12 pb-16 relative">
-                            <textarea id="note-content" placeholder="Querido diário..." spellcheck="true" 
-                                class="w-full h-full min-h-[500px] resize-none bg-transparent border-none focus:ring-0 px-0 py-0 tracking-wide leading-9 outline-none transition-colors duration-300"></textarea>
+                            <!-- Div contenteditable com suporte a corretor -->
+                            <div id="note-content" contenteditable="true" spellcheck="true" lang="pt-BR" placeholder="Querido diário... (Cole imagens ou arraste para cá!)" class="w-full h-full min-h-[500px] bg-transparent border-none focus:ring-0 px-0 py-0 tracking-wide leading-9 outline-none transition-colors duration-300 whitespace-pre-wrap"></div>
                             <div id="note-preview" class="hidden prose prose-lg prose-pink max-w-none whitespace-pre-wrap min-h-[500px]"></div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
-
     </main>
 
-    <!-- Modal de Backup -->
-    <div id="backup-modal" class="hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center animate-pop">
-        <div class="bg-white p-6 rounded-3xl shadow-2xl max-w-md w-full mx-4 border-4 border-rose-100 relative">
-             <button onclick="app.closeBackupModal()" class="absolute top-4 right-4 text-slate-400 hover:text-rose-500 transition-colors">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-            
-            <div class="text-center mb-6 pt-2">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm text-blue-500 ring-4 ring-blue-50">
-                    💾
-                </div>
-                <h3 class="text-2xl font-bold text-slate-700 font-ui">Backup Seguro</h3>
-                <p class="text-slate-500 text-sm mt-2 font-medium px-4">Guarda as tuas memórias num lugar seguro ou recupera um diário antigo.</p>
-            </div>
-
-            <div class="space-y-4">
-                <button onclick="app.exportBackup()" id="btn-export" class="w-full py-4 px-5 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl flex items-center justify-between group transition-all shadow-lg shadow-slate-200">
-                    <div class="flex items-center gap-4">
-                        <div class="p-2 bg-white/10 rounded-xl"><i data-lucide="download" class="w-6 h-6"></i></div>
-                        <div class="text-left">
-                            <span class="block font-bold text-base">Guardar Backup</span>
-                            <span class="block text-xs text-slate-400">Baixar ficheiro .json</span>
-                        </div>
-                    </div>
-                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-500 group-hover:text-white transition-colors"></i>
-                </button>
-
-                <div class="relative">
-                    <input type="file" id="import-file" accept=".json" class="hidden" onchange="app.handleImport(event)">
-                    <button onclick="document.getElementById('import-file').click()" class="w-full py-4 px-5 bg-white hover:bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-between group transition-all border-2 border-rose-100 hover:border-rose-200">
-                         <div class="flex items-center gap-4">
-                            <div class="p-2 bg-rose-100 rounded-xl shadow-sm"><i data-lucide="upload" class="w-6 h-6"></i></div>
-                            <div class="text-left">
-                                <span class="block font-bold text-base">Restaurar Diário</span>
-                                <span class="block text-xs text-rose-400 opacity-80">Carregar ficheiro .json</span>
-                            </div>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-5 h-5 text-rose-300 group-hover:text-rose-600 transition-colors"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="mt-6 text-center">
-                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Os teus segredos estão seguros</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Confirmação Apagar -->
     <div id="delete-modal" class="hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center animate-pop">
         <div class="bg-white p-6 rounded-3xl shadow-2xl max-w-sm w-full mx-4 text-center border-4 border-rose-100">
-            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm">
-                💔
-            </div>
+            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-sm">💔</div>
             <h3 class="text-xl font-bold text-slate-700 mb-2 font-ui">Apagar Página?</h3>
             <p class="text-slate-500 text-sm mb-6 font-medium">Tens a certeza que queres apagar esta memória fofinha? Não há volta a dar! 🥺</p>
             <div class="flex gap-3 justify-center">
-                <button onclick="app.closeDeleteModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold hover:bg-slate-200 transition-colors text-sm font-ui">
-                    Cancelar
-                </button>
-                <button onclick="app.confirmDelete()" class="px-5 py-2.5 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors shadow-lg shadow-rose-200 text-sm font-ui">
-                    Sim, apagar
-                </button>
+                <button onclick="app.closeDeleteModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold hover:bg-slate-200 transition-colors text-sm font-ui">Cancelar</button>
+                <button onclick="app.confirmDelete()" class="px-5 py-2.5 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors shadow-lg shadow-rose-200 text-sm font-ui">Sim, apagar</button>
             </div>
         </div>
     </div>
 
-    <!-- Lógica da Aplicação -->
+    <div id="context-menu" class="hidden fixed z-[100] bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-100 p-4 w-52 animate-pop ring-1 ring-slate-200/50">
+        <div class="flex items-center gap-2 mb-3 px-1">
+            <i data-lucide="palette" class="w-3 h-3 text-rose-400"></i>
+            <span id="context-menu-title" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pintar Texto</span>
+        </div>
+        <div class="grid grid-cols-4 gap-2" id="context-menu-colors"></div>
+        <div class="mt-3 pt-2 border-t border-slate-100">
+             <button onmousedown="event.preventDefault(); document.execCommand('removeFormat'); app.closeContextMenu();" class="w-full flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors">
+                <i data-lucide="eraser" class="w-3 h-3"></i> Limpar Cor
+            </button>
+        </div>
+    </div>
+
     <script>
-        // --- Configurações Fofas com Cores Fortes ---
-        
         const coverThemes = [
-            // Cores mais saturadas para o fundo (bodyBg) e padrão (patternColor)
-            { id: 'blush', name: 'Blush', icon: '🎀', bg: 'bg-rose-50', gradient: 'from-rose-400 to-rose-500', text: 'text-rose-600', border: 'border-rose-200', bodyBg: '#fecdd3', patternColor: '#fb7185' }, // Rosa Forte
-            { id: 'babyblue', name: 'Nuvem', icon: '☁️', bg: 'bg-sky-50', gradient: 'from-sky-400 to-blue-500', text: 'text-sky-600', border: 'border-sky-200', bodyBg: '#bae6fd', patternColor: '#38bdf8' }, // Azul Céu Forte
-            { id: 'lavender', name: 'Sonho', icon: '🦄', bg: 'bg-purple-50', gradient: 'from-purple-400 to-violet-500', text: 'text-purple-600', border: 'border-purple-200', bodyBg: '#e9d5ff', patternColor: '#a78bfa' }, // Roxo Forte
-            { id: 'mint', name: 'Chá', icon: '🍵', bg: 'bg-emerald-50', gradient: 'from-emerald-400 to-teal-500', text: 'text-teal-600', border: 'border-emerald-200', bodyBg: '#bbf7d0', patternColor: '#4ade80' }, // Verde Forte
-            { id: 'lemon', name: 'Sol', icon: '🌻', bg: 'bg-yellow-50', gradient: 'from-yellow-400 to-amber-500', text: 'text-amber-600', border: 'border-yellow-200', bodyBg: '#fde047', patternColor: '#eab308' }, // Amarelo Forte
-            { id: 'peach', name: 'Pêssego', icon: '🍑', bg: 'bg-orange-50', gradient: 'from-orange-400 to-rose-500', text: 'text-orange-600', border: 'border-orange-200', bodyBg: '#fdba74', patternColor: '#fb923c' }, // Laranja Forte
-            { id: 'dark', name: 'Lua', icon: '🌙', bg: 'bg-slate-800', gradient: 'from-slate-700 to-slate-900', text: 'text-indigo-200', border: 'border-slate-700', isDark: true, bodyBg: '#0f172a', patternColor: '#334155' }, // Escuro
+            { id: 'blush', name: 'Blush', icon: '🎀', bg: 'bg-rose-50', gradient: 'from-rose-400 to-rose-500', text: 'text-rose-600', border: 'border-rose-200', bodyBg: '#fecdd3', patternColor: '#fb7185' },
+            { id: 'babyblue', name: 'Nuvem', icon: '☁️', bg: 'bg-sky-50', gradient: 'from-sky-400 to-blue-500', text: 'text-sky-600', border: 'border-sky-200', bodyBg: '#bae6fd', patternColor: '#38bdf8' },
+            { id: 'lavender', name: 'Sonho', icon: '🦄', bg: 'bg-purple-50', gradient: 'from-purple-400 to-violet-500', text: 'text-purple-600', border: 'border-purple-200', bodyBg: '#e9d5ff', patternColor: '#a78bfa' },
+            { id: 'mint', name: 'Chá', icon: '🍵', bg: 'bg-emerald-50', gradient: 'from-emerald-400 to-teal-500', text: 'text-teal-600', border: 'border-emerald-200', bodyBg: '#bbf7d0', patternColor: '#4ade80' },
+            { id: 'lemon', name: 'Sol', icon: '🌻', bg: 'bg-yellow-50', gradient: 'from-yellow-400 to-amber-500', text: 'text-amber-600', border: 'border-yellow-200', bodyBg: '#fde047', patternColor: '#eab308' },
+            { id: 'peach', name: 'Pêssego', icon: '🍑', bg: 'bg-orange-50', gradient: 'from-orange-400 to-rose-500', text: 'text-orange-600', border: 'border-orange-200', bodyBg: '#fdba74', patternColor: '#fb923c' },
+            { id: 'dark', name: 'Lua', icon: '🌙', bg: 'bg-slate-800', gradient: 'from-slate-700 to-slate-900', text: 'text-indigo-200', border: 'border-slate-700', isDark: true, bodyBg: '#0f172a', patternColor: '#334155' },
         ];
 
         const fontOptions = {
-            dancing: { id: 'dancing', name: 'Dancing', family: '"Dancing Script", cursive', class: 'font-dancing' },
-            pacifico: { id: 'pacifico', name: 'Pacifico', family: '"Pacifico", cursive', class: 'font-pacifico' },
-            indie: { id: 'indie', name: 'Indie', family: '"Indie Flower", cursive', class: 'font-indie' },
             quicksand: { id: 'quicksand', name: 'Quicksand', family: '"Quicksand", sans-serif', class: 'font-ui' },
-            playfair: { id: 'playfair', name: 'Playfair', family: '"Playfair Display", serif', class: 'font-playfair' },
-            handwriting: { id: 'handwriting', name: 'Caveat', family: '"Caveat", cursive', class: 'font-handwriting' },
-            marker: { id: 'marker', name: 'Marker', family: '"Patrick Hand", cursive', class: 'font-marker' },
-            serif: { id: 'serif', name: 'Livro', family: '"Merriweather", serif', class: 'font-serif' },
+            caveat: { id: 'caveat', name: 'Caveat', family: '"Caveat", cursive', class: 'font-handwriting' },
+            patrick: { id: 'patrick', name: 'Patrick', family: '"Patrick Hand", cursive', class: 'font-marker' },
+            dancing: { id: 'dancing', name: 'Dancing', family: '"Dancing Script", cursive', class: 'font-dancing' },
+            sacramento: { id: 'sacramento', name: 'Sacramento', family: '"Sacramento", cursive', class: 'font-sacramento' },
+            indie: { id: 'indie', name: 'Indie', family: '"Indie Flower", cursive', class: 'font-indie' },
+            kalam: { id: 'kalam', name: 'Kalam', family: '"Kalam", cursive', class: 'font-kalam' },
+            amatic: { id: 'amatic', name: 'Amatic', family: '"Amatic SC", cursive', class: 'font-amatic' },
+            shadows: { id: 'shadows', name: 'Shadows', family: '"Shadows Into Light", cursive', class: 'font-shadows' },
+            gloria: { id: 'gloria', name: 'Gloria', family: '"Gloria Hallelujah", cursive', class: 'font-gloria' },
+            vibes: { id: 'vibes', name: 'Vibes', family: '"Great Vibes", cursive', class: 'font-vibes' },
+            handlee: { id: 'handlee', name: 'Handlee', family: '"Handlee", cursive', class: 'font-handlee' },
+            mali: { id: 'mali', name: 'Mali', family: '"Mali", cursive', class: 'font-mali' },
+            courgette: { id: 'courgette', name: 'Courgette', family: '"Courgette", cursive', class: 'font-courgette' },
         };
 
         const textColors = [
@@ -308,249 +293,108 @@
             { id: 'blue', color: '#2563eb', name: 'Azul' },
             { id: 'teal', color: '#0d9488', name: 'Verde' },
             { id: 'cocoa', color: '#78350f', name: 'Cacau' },
+            { id: 'orange', color: '#f97316', name: 'Laranja' },
         ];
 
-        const paperStyles = {
-            lined: {
-                label: 'Linhas',
-                isDark: false,
-                css: {
-                    backgroundImage: 'linear-gradient(transparent 35px, #e2e8f0 35px)',
-                    backgroundSize: '100% 36px',
-                    lineHeight: '36px',
-                    backgroundColor: '#ffffff'
-                }
-            },
-            grid: {
-                label: 'Quadros',
-                isDark: false,
-                css: {
-                    backgroundImage: 'linear-gradient(#f1f5f9 1px, transparent 1px), linear-gradient(90deg, #f1f5f9 1px, transparent 1px)',
-                    backgroundSize: '24px 24px',
-                    lineHeight: '36px',
-                    backgroundColor: '#ffffff'
-                }
-            },
-            dots: {
-                label: 'Pontos',
-                isDark: false,
-                css: {
-                    backgroundImage: 'radial-gradient(#cbd5e1 1.5px, transparent 1.5px)',
-                    backgroundSize: '24px 24px',
-                    lineHeight: '36px',
-                    backgroundColor: '#ffffff'
-                }
-            },
-            pink: {
-                label: 'Rosa',
-                isDark: false,
-                css: {
-                    backgroundColor: '#fff1f2',
-                    backgroundImage: 'linear-gradient(transparent 35px, #fecdd3 35px)',
-                    backgroundSize: '100% 36px',
-                    lineHeight: '36px'
-                }
-            },
-            cream: {
-                label: 'Creme',
-                isDark: false,
-                css: {
-                    backgroundColor: '#fffbeb',
-                    backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")',
-                    lineHeight: '36px'
-                }
-            }
+        const stickers = {
+            flowers: ['🌸', '🌼', '🌻', '🌹', '🌷', '💐', '🌺', '🍃'],
+            sky: ['⭐', '🌟', '✨', '🌙', '☀️', '⛅', '🌈', '☁️'],
+            cute: ['💖', '💜', '💌', '🎀', '🧸', '🎈', '🎨', '🎉'],
+            animals: ['🐱', '🐶', '🐰', '🐸', '🦋', '🐝', '🐞', '🦄'],
+            food: ['🍓', '🍑', '🍒', '🍪', '🍩', '🍰', '🧁', '🍦'],
+            stationery: ['📌', '📍', '📎', '🖍️', '🖊️', '✂️', '📏', '📔']
         };
 
-        // Estado da Aplicação
+        const paperStyles = {
+            lined: { label: 'Linhas', isDark: false, css: { backgroundImage: 'linear-gradient(transparent 35px, #e2e8f0 35px)', backgroundSize: '100% 36px', lineHeight: '36px', backgroundColor: '#ffffff' } },
+            grid: { label: 'Quadros', isDark: false, css: { backgroundImage: 'linear-gradient(#f1f5f9 1px, transparent 1px), linear-gradient(90deg, #f1f5f9 1px, transparent 1px)', backgroundSize: '24px 24px', lineHeight: '36px', backgroundColor: '#ffffff' } },
+            dots: { label: 'Pontos', isDark: false, css: { backgroundImage: 'radial-gradient(#cbd5e1 1.5px, transparent 1.5px)', backgroundSize: '24px 24px', lineHeight: '36px', backgroundColor: '#ffffff' } },
+            pink: { label: 'Rosa', isDark: false, css: { backgroundColor: '#fff1f2', backgroundImage: 'linear-gradient(transparent 35px, #fecdd3 35px)', backgroundSize: '100% 36px', lineHeight: '36px' } },
+            cream: { label: 'Creme', isDark: false, css: { backgroundColor: '#fffbeb', backgroundImage: 'url("https://www.transparenttextures.com/patterns/cream-paper.png")', lineHeight: '36px' } }
+        };
+
         const app = {
-            notes: [],
-            activeNoteId: null,
-            searchQuery: '',
-            viewMode: 'edit',
-            enableSpellcheck: true, // Novo estado para o corretor
-            noteToDeleteId: null, // ID da nota a apagar
+            notes: [], activeNoteId: null, searchQuery: '', viewMode: 'edit', enableSpellcheck: true, noteToDeleteId: null, savedSelection: null, contextMenuTarget: null,
+            activeImage: null, isResizing: false, startX: 0, startWidth: 0,
             
             init() {
-                const saved = localStorage.getItem('smart-notebook-cute-v3');
-                // Carregar preferência do corretor se existir (ou usar true por defeito)
+                const saved = localStorage.getItem('smart-notebook-cute-v4');
                 const savedSpellcheck = localStorage.getItem('smart-notebook-spellcheck');
                 this.enableSpellcheck = savedSpellcheck !== null ? JSON.parse(savedSpellcheck) : true;
-
-                if (saved) {
-                    this.notes = JSON.parse(saved);
-                } else {
-                    this.notes = [
-                        {
-                            id: '1',
-                            title: 'Meus Sonhos ✨',
-                            content: 'Coisas que quero fazer este ano:\n\n1. Aprender a fazer cookies 🍪\n2. Plantar um jardim 🌸\n3. Ler 12 livros de fantasia\n\n"Acredita na magia dos novos começos."',
-                            tags: ['sonhos', '2025'],
-                            theme: 'blush',
-                            paper: 'pink',
-                            font: 'dancing',
-                            fontSize: 26,
-                            textColor: '#db2777', // Rosa
-                            updatedAt: new Date().toISOString(),
-                        },
-                        {
-                            id: '2',
-                            title: 'Ideias de Presentes 🎁',
-                            content: 'Para a mãe: Um colar de prata\nPara o pai: Livro de história\nPara mim: Cadernos novos!',
-                            tags: ['compras', 'amor'],
-                            theme: 'babyblue',
-                            paper: 'grid',
-                            font: 'indie',
-                            fontSize: 22,
-                            textColor: '#475569',
-                            updatedAt: new Date(Date.now() - 86400000).toISOString(),
-                        }
-                    ];
-                }
+                if (saved) { this.notes = JSON.parse(saved); } 
+                else { this.notes = [{ id: '1', title: 'Meus Sonhos ✨', content: 'Coisas que quero fazer este ano:<br><br>1. Aprender a fazer cookies 🍪<br>2. Plantar um jardim 🌸<br>3. Ler 12 livros de fantasia<br><br>"Acredita na magia dos novos começos."', tags: ['sonhos', '2025'], theme: 'blush', paper: 'pink', font: 'dancing', titleFont: 'dancing', fontSize: 26, titleColor: '#db2777', updatedAt: new Date().toISOString() }]; }
+                if (this.notes.length > 0) { this.activeNoteId = this.notes[0].id; }
                 
-                if (this.notes.length > 0) {
-                    this.activeNoteId = this.notes[0].id;
-                }
-
-                document.getElementById('search-input').addEventListener('input', (e) => {
-                    this.searchQuery = e.target.value;
-                    this.renderSidebar();
-                });
-
+                document.getElementById('search-input').addEventListener('input', (e) => { this.searchQuery = e.target.value; this.renderSidebar(); });
                 document.getElementById('note-title').addEventListener('input', (e) => this.updateNote('title', e.target.value));
-                document.getElementById('note-content').addEventListener('input', (e) => this.updateNote('content', e.target.value));
-                
-                document.getElementById('tag-input').addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && e.target.value.trim()) {
-                        this.addTag(e.target.value.trim());
-                        e.target.value = '';
+                document.getElementById('note-content').addEventListener('input', (e) => { this.updateNote('content', e.target.innerHTML); });
+                document.addEventListener('selectionchange', () => {
+                    const sel = window.getSelection();
+                    if (sel.rangeCount > 0) {
+                        const editor = document.getElementById('note-content');
+                        if (editor && editor.contains(sel.anchorNode)) { this.savedSelection = sel.getRangeAt(0).cloneRange(); }
                     }
                 });
-
-                this.renderSidebar();
-                this.renderMain();
-                this.renderMenu();
-                lucide.createIcons();
-            },
-
-            save() {
-                localStorage.setItem('smart-notebook-cute-v3', JSON.stringify(this.notes));
-            },
-
-            addNote() {
-                const newNote = {
-                    id: Date.now().toString(),
-                    title: '',
-                    content: '',
-                    tags: [],
-                    theme: 'blush',
-                    paper: 'lined',
-                    font: 'quicksand',
-                    fontSize: 22,
-                    textColor: '#475569',
-                    updatedAt: new Date().toISOString(),
-                };
-                this.notes.unshift(newNote);
-                this.activeNoteId = newNote.id;
-                this.viewMode = 'edit';
                 
-                if (window.innerWidth < 768) this.toggleSidebar();
+                const noteContent = document.getElementById('note-content');
+                noteContent.addEventListener('click', (e) => { 
+                    if (e.target.tagName === 'IMG') { this.activateImageResize(e.target); } 
+                    else { this.deactivateImageResize(); } 
+                });
                 
-                this.save();
-                this.renderSidebar();
-                this.renderMain();
-            },
-
-            updateNote(key, value) {
-                const note = this.notes.find(n => n.id === this.activeNoteId);
-                if (note) {
-                    note[key] = value;
-                    note.updatedAt = new Date().toISOString();
-                    this.save();
-                    
-                    if (key === 'title' || key === 'tags' || key === 'theme') {
-                        this.renderSidebar();
+                document.getElementById('paper-content-area').addEventListener('scroll', () => { if(this.activeImage) this.updateOverlayPosition(); });
+                window.addEventListener('resize', () => { if(this.activeImage) this.updateOverlayPosition(); });
+                document.addEventListener('mousemove', (e) => this.doResize(e));
+                document.addEventListener('mouseup', () => this.stopResize());
+                
+                noteContent.addEventListener('paste', (e) => {
+                    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+                    for (let index in items) {
+                        const item = items[index];
+                        if (item.kind === 'file' && item.type.startsWith('image/')) {
+                            e.preventDefault();
+                            this.insertImage(item.getAsFile());
+                        }
                     }
-                    if (['fontSize', 'font', 'paper', 'textColor', 'theme'].includes(key)) {
-                        this.renderMain();
+                });
+                
+                noteContent.addEventListener('dragover', (e) => { if (e.dataTransfer.types.includes('Files')) { e.preventDefault(); noteContent.classList.add('bg-white/50', 'ring-4', 'ring-rose-300'); } });
+                noteContent.addEventListener('dragleave', (e) => { if (e.dataTransfer.types.includes('Files')) { e.preventDefault(); noteContent.classList.remove('bg-white/50', 'ring-4', 'ring-rose-300'); } });
+                noteContent.addEventListener('drop', (e) => {
+                    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                        e.preventDefault();
+                        noteContent.classList.remove('bg-white/50', 'ring-4', 'ring-rose-300');
+                        const file = e.dataTransfer.files[0];
+                        if (file.type.startsWith('image/')) { this.insertImage(file); }
                     }
-                    
-                    if (!document.getElementById('appearance-menu').classList.contains('hidden')) {
-                        this.renderMenu();
-                    }
-                }
-            },
-
-            // Função para iniciar a eliminação (abre o modal)
-            deleteNote(e, id) {
-                e.stopPropagation();
-                this.noteToDeleteId = id;
-                document.getElementById('delete-modal').classList.remove('hidden');
-            },
-
-            // Fecha o modal sem apagar
-            closeDeleteModal() {
-                this.noteToDeleteId = null;
-                document.getElementById('delete-modal').classList.add('hidden');
-            },
-
-            // Confirma a eliminação e apaga a nota
-            confirmDelete() {
-                if (!this.noteToDeleteId) return;
+                });
                 
-                const id = this.noteToDeleteId;
-                this.notes = this.notes.filter(n => n.id !== id);
-                if (this.activeNoteId === id) {
-                    this.activeNoteId = this.notes.length > 0 ? this.notes[0].id : null;
-                }
-                this.save();
-                this.renderSidebar();
-                this.renderMain();
+                document.getElementById('tag-input').addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.value.trim()) { this.addTag(e.target.value.trim()); e.target.value = ''; } });
                 
-                this.closeDeleteModal();
-            },
-
-            // --- FUNÇÕES DE BACKUP ---
-            openBackupModal() {
-                document.getElementById('backup-modal').classList.remove('hidden');
-                lucide.createIcons();
-            },
-
-            closeBackupModal() {
-                document.getElementById('backup-modal').classList.add('hidden');
-            },
-
-            exportBackup() {
-                const dataStr = JSON.stringify(this.notes, null, 2);
-                const blob = new Blob([dataStr], { type: "application/json" });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                const date = new Date().toISOString().split('T')[0];
-                a.href = url;
-                a.download = `meu-diario-backup-${date}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                document.addEventListener('contextmenu', (e) => {
+                    const editor = document.getElementById('note-content');
+                    const titleInput = document.getElementById('note-title');
+                    if (editor.contains(e.target)) { e.preventDefault(); this.contextMenuTarget = 'content'; this.showContextMenu(e.pageX, e.pageY); }
+                    else if (titleInput.contains(e.target)) { e.preventDefault(); this.contextMenuTarget = 'title'; this.showContextMenu(e.pageX, e.pageY); }
+                });
+                document.addEventListener('click', (e) => { if (!document.getElementById('context-menu').contains(e.target)) { this.hideContextMenu(); } });
                 
-                // Feedback visual temporário
-                const btn = document.getElementById('btn-export');
-                const originalHtml = btn.innerHTML;
-                const originalClass = btn.className;
-                
-                btn.className = "w-full py-4 px-5 bg-green-500 text-white rounded-2xl flex items-center justify-center transition-all shadow-lg";
-                btn.innerHTML = `<div class="flex items-center gap-2 font-bold"><i data-lucide="check" class="w-6 h-6"></i> Backup Guardado!</div>`;
-                lucide.createIcons();
-
-                setTimeout(() => {
-                    btn.className = originalClass;
-                    btn.innerHTML = originalHtml;
-                    lucide.createIcons();
-                }, 2000);
+                this.renderSidebar(); this.renderMain(); this.renderMenu(); this.renderContextMenu(); lucide.createIcons();
+            },
+            
+            // --- Backup & Restore ---
+            downloadBackup() {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.notes));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", "backup_caderno.json");
+                document.body.appendChild(downloadAnchorNode); // required for firefox
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
             },
 
-            handleImport(event) {
-                const file = event.target.files[0];
+            restoreBackup(input) {
+                const file = input.files[0];
                 if (!file) return;
 
                 const reader = new FileReader();
@@ -558,393 +402,317 @@
                     try {
                         const importedNotes = JSON.parse(e.target.result);
                         if (Array.isArray(importedNotes)) {
-                            if(confirm('Atenção! Isto irá substituir TODAS as notas atuais pelas do backup. Queres mesmo continuar?')) {
+                            if (confirm("Isto irá substituir todas as notas atuais. Tem a certeza?")) {
                                 this.notes = importedNotes;
-                                
-                                // Resetar nota ativa se não existir
-                                if(this.notes.length > 0) {
-                                    this.activeNoteId = this.notes[0].id;
-                                } else {
-                                    this.activeNoteId = null;
-                                }
+                                if (this.notes.length > 0) this.activeNoteId = this.notes[0].id;
+                                else this.activeNoteId = null;
                                 
                                 this.save();
                                 this.renderSidebar();
                                 this.renderMain();
-                                this.closeBackupModal();
-                                alert('Diário restaurado com sucesso! 🎉');
+                                alert("Backup restaurado com sucesso! ✨");
                             }
                         } else {
-                            alert('Ficheiro inválido. O formato deve ser uma lista de notas JSON.');
+                            alert("Ficheiro de backup inválido.");
                         }
-                    } catch (err) {
-                        alert('Erro ao ler o ficheiro. Tenta novamente ou verifica se o ficheiro está correto.');
-                        console.error(err);
+                    } catch (error) {
+                        console.error(error);
+                        alert("Erro ao ler o ficheiro.");
                     }
+                    input.value = ''; // Reset input
                 };
                 reader.readAsText(file);
-                event.target.value = ''; // Reset input para permitir carregar o mesmo ficheiro novamente
             },
-            // --- FIM FUNÇÕES BACKUP ---
-
-            selectNote(id) {
-                this.activeNoteId = id;
-                this.viewMode = 'edit';
-                if (window.innerWidth < 768) this.toggleSidebar();
-                this.renderSidebar();
-                this.renderMain();
+            
+            // --- Image Resize ---
+            activateImageResize(img) {
+                this.activeImage = img;
+                const overlay = document.getElementById('resize-overlay');
+                overlay.style.display = 'block';
+                this.updateOverlayPosition();
             },
-
-            addTag(tag) {
-                const note = this.notes.find(n => n.id === this.activeNoteId);
-                const normalizedTag = tag.toLowerCase();
-                if (note && !note.tags.includes(normalizedTag)) {
-                    this.updateNote('tags', [...note.tags, normalizedTag]);
-                    this.renderTags();
+            deactivateImageResize() {
+                this.activeImage = null;
+                document.getElementById('resize-overlay').style.display = 'none';
+            },
+            updateOverlayPosition() {
+                if (!this.activeImage) return;
+                const overlay = document.getElementById('resize-overlay');
+                const container = document.getElementById('paper-content-area');
+                const imgRect = this.activeImage.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                
+                overlay.style.top = (imgRect.top - containerRect.top + container.scrollTop) + 'px';
+                overlay.style.left = (imgRect.left - containerRect.left + container.scrollLeft) + 'px';
+                overlay.style.width = imgRect.width + 'px';
+                overlay.style.height = imgRect.height + 'px';
+            },
+            startResize(e) {
+                if (!this.activeImage) return;
+                e.preventDefault(); e.stopPropagation();
+                this.isResizing = true;
+                this.startX = e.clientX;
+                this.startWidth = this.activeImage.offsetWidth;
+            },
+            doResize(e) {
+                if (!this.isResizing || !this.activeImage) return;
+                const diff = e.clientX - this.startX;
+                const newWidth = Math.max(50, this.startWidth + diff);
+                this.activeImage.style.width = newWidth + 'px';
+                this.updateOverlayPosition();
+            },
+            stopResize() {
+                if (this.isResizing) {
+                    this.isResizing = false;
+                    this.updateNote('content', document.getElementById('note-content').innerHTML);
                 }
             },
 
-            removeTag(tag) {
-                const note = this.notes.find(n => n.id === this.activeNoteId);
-                if (note) {
-                    this.updateNote('tags', note.tags.filter(t => t !== tag));
-                    this.renderTags();
-                }
-            },
-
+            // --- Lógica Principal ---
             toggleSidebar() {
                 const sidebar = document.getElementById('sidebar');
-                sidebar.classList.toggle('-translate-x-full');
+                const menuBtn = document.getElementById('main-menu-btn');
+                if (window.innerWidth < 768) { sidebar.classList.toggle('-translate-x-full'); } 
+                else {
+                    if (sidebar.classList.contains('md:w-80')) { 
+                        sidebar.classList.remove('md:w-80'); sidebar.classList.add('md:w-0', 'p-0', 'border-none'); 
+                        menuBtn.classList.remove('hidden'); 
+                    } else { 
+                        sidebar.classList.add('md:w-80'); sidebar.classList.remove('md:w-0', 'p-0', 'border-none'); 
+                        menuBtn.classList.add('hidden'); 
+                    }
+                }
             },
-
-            toggleViewMode() {
-                this.viewMode = this.viewMode === 'edit' ? 'preview' : 'edit';
-                this.renderMain();
+            insertImage(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const editor = document.getElementById('note-content'); editor.focus();
+                    document.execCommand('insertHTML', false, `<img src="${e.target.result}" style="width: 50%; max-width: 100%; height: auto; border-radius: 12px; margin: 10px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); display: block;">`);
+                    this.updateNote('content', editor.innerHTML);
+                };
+                reader.readAsDataURL(file);
             },
-
-            toggleAppearanceMenu() {
-                const menu = document.getElementById('appearance-menu');
-                const btn = document.getElementById('btn-personalizar');
+            
+            // Nova função para inserir Adesivos
+            insertSticker(sticker) {
+                const editor = document.getElementById('note-content');
                 
-                menu.classList.toggle('hidden');
-                btn.classList.toggle('bg-slate-100');
+                // Tenta restaurar seleção para inserir onde o cursor estava
+                this.restoreSelection();
+                editor.focus();
                 
-                if (!menu.classList.contains('hidden')) {
-                    this.renderMenu(); 
+                // Inserir como texto (span) para ficar na linha
+                // Usamos um tamanho um pouco maior para o emoji ficar bonito
+                document.execCommand('insertHTML', false, `<span style="font-size: 1.2em; vertical-align: middle;">${sticker}</span>`);
+                
+                // Salvar e atualizar seleção
+                this.updateNote('content', editor.innerHTML);
+                const sel = window.getSelection();
+                if (sel.rangeCount > 0) {
+                    this.savedSelection = sel.getRangeAt(0).cloneRange();
                 }
             },
 
-            toggleSpellcheck() {
-                this.enableSpellcheck = !this.enableSpellcheck;
-                localStorage.setItem('smart-notebook-spellcheck', JSON.stringify(this.enableSpellcheck));
-                this.renderMain();
-                // Atualizar o menu para refletir a mudança visualmente
-                this.renderMenu();
+            restoreSelection() { const sel = window.getSelection(); sel.removeAllRanges(); if (this.savedSelection) { sel.addRange(this.savedSelection); } },
+            save() { localStorage.setItem('smart-notebook-cute-v4', JSON.stringify(this.notes)); },
+            addNote() {
+                const newNote = { id: Date.now().toString(), title: '', content: '', tags: [], theme: 'blush', paper: 'lined', font: 'quicksand', titleFont: 'dancing', fontSize: 22, titleColor: '#475569', updatedAt: new Date().toISOString() };
+                this.notes.unshift(newNote); this.activeNoteId = newNote.id; this.viewMode = 'edit';
+                if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
+                this.save(); this.renderSidebar(); this.renderMain();
             },
-
-            changeFontSize(delta) {
+            updateNote(key, value) {
                 const note = this.notes.find(n => n.id === this.activeNoteId);
                 if (note) {
-                    const current = note.fontSize || 22;
-                    const newSize = Math.max(14, Math.min(48, current + delta));
-                    this.updateNote('fontSize', newSize);
+                    note[key] = value; note.updatedAt = new Date().toISOString(); this.save();
+                    if (['title', 'tags', 'theme'].includes(key)) this.renderSidebar();
+                    if (['fontSize', 'font', 'paper', 'titleColor', 'titleFont', 'theme'].includes(key)) this.renderMain();
+                    if (!document.getElementById('appearance-menu').classList.contains('hidden')) this.renderMenu();
                 }
             },
-
+            applyColor(color) {
+                if (this.contextMenuTarget === 'title') { this.updateNote('titleColor', color); } 
+                else {
+                    this.restoreSelection(); const editor = document.getElementById('note-content'); editor.focus();
+                    document.execCommand('styleWithCSS', false, true); document.execCommand('foreColor', false, color);
+                    const sel = window.getSelection(); if (sel.rangeCount > 0) sel.collapseToEnd();
+                    this.updateNote('content', editor.innerHTML);
+                }
+            },
+            applySelectionFont(fontKey) {
+                this.restoreSelection();
+                const fontName = fontOptions[fontKey].family;
+                const editor = document.getElementById('note-content'); editor.focus();
+                document.execCommand('styleWithCSS', false, true); document.execCommand('fontName', false, fontName);
+                const sel = window.getSelection(); if (sel.rangeCount > 0) sel.collapseToEnd();
+                this.updateNote('content', editor.innerHTML);
+            },
+            setFont(fontKey) {
+                const titleInput = document.getElementById('note-title');
+                if (document.activeElement === titleInput) {
+                    this.updateNote('titleFont', fontKey);
+                } else {
+                    this.applySelectionFont(fontKey);
+                }
+            },
+            renderContextMenu() {
+                const container = document.getElementById('context-menu-colors');
+                container.innerHTML = textColors.map(c => `<button onmousedown="event.preventDefault(); app.applyColor('${c.color}'); app.closeContextMenu();" class="w-8 h-8 rounded-full border border-slate-100 shadow-sm hover:scale-110 transition-transform flex items-center justify-center group" style="background-color: ${c.color}" title="${c.name}"></button>`).join('') + 
+                `<div class="relative w-8 h-8 rounded-full border border-slate-200 shadow-sm overflow-hidden hover:scale-110 transition-transform group" title="Outra Cor"><input type="color" onmousedown="event.preventDefault(); if(app.contextMenuTarget !== 'title') app.restoreSelection()" onchange="app.applyColor(this.value); app.closeContextMenu();" class="absolute -top-2 -left-2 w-12 h-12 p-0 border-0 opacity-0 cursor-pointer"><div class="w-full h-full bg-[conic-gradient(from_180deg_at_50%_50%,_#FF0000_0deg,_#00FF00_120deg,_#0000FF_240deg,_#FF0000_360deg)]"></div><div class="absolute inset-0 flex items-center justify-center pointer-events-none text-white drop-shadow-md"><i data-lucide="plus" class="w-4 h-4"></i></div></div>`;
+                lucide.createIcons();
+            },
+            showContextMenu(x, y) {
+                const menu = document.getElementById('context-menu');
+                document.getElementById('context-menu-title').innerText = this.contextMenuTarget === 'title' ? 'COR DO TÍTULO' : 'PINTAR TEXTO';
+                let posX = x, posY = y;
+                if (x + 208 > window.innerWidth) posX = x - 208;
+                if (y + 200 > window.innerHeight) posY = y - 200;
+                menu.style.left = `${posX}px`; menu.style.top = `${posY}px`; menu.classList.remove('hidden');
+            },
+            hideContextMenu() { document.getElementById('context-menu').classList.add('hidden'); this.contextMenuTarget = null; },
+            closeContextMenu() { this.hideContextMenu(); },
+            deleteNote(e, id) { e.stopPropagation(); this.noteToDeleteId = id; document.getElementById('delete-modal').classList.remove('hidden'); },
+            closeDeleteModal() { this.noteToDeleteId = null; document.getElementById('delete-modal').classList.add('hidden'); },
+            confirmDelete() {
+                if (!this.noteToDeleteId) return;
+                const id = this.noteToDeleteId; this.notes = this.notes.filter(n => n.id !== id);
+                if (this.activeNoteId === id) this.activeNoteId = this.notes.length > 0 ? this.notes[0].id : null;
+                this.save(); this.renderSidebar(); this.renderMain(); this.closeDeleteModal();
+            },
+            selectNote(id) { this.activeNoteId = id; this.viewMode = 'edit'; if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full'); this.renderSidebar(); this.renderMain(); },
+            addTag(tag) { const note = this.notes.find(n => n.id === this.activeNoteId); if (note && !note.tags.includes(tag.toLowerCase())) { this.updateNote('tags', [...note.tags, tag.toLowerCase()]); this.renderTags(); } },
+            removeTag(tag) { const note = this.notes.find(n => n.id === this.activeNoteId); if (note) { this.updateNote('tags', note.tags.filter(t => t !== tag)); this.renderTags(); } },
+            toggleViewMode() { this.viewMode = this.viewMode === 'edit' ? 'preview' : 'edit'; this.renderMain(); },
+            toggleAppearanceMenu() { const menu = document.getElementById('appearance-menu'); document.getElementById('btn-personalizar').classList.toggle('bg-slate-100'); menu.classList.toggle('hidden'); if (!menu.classList.contains('hidden')) this.renderMenu(); },
+            toggleSpellcheck() { 
+                this.enableSpellcheck = !this.enableSpellcheck; 
+                localStorage.setItem('smart-notebook-spellcheck', JSON.stringify(this.enableSpellcheck)); 
+                // Atualiza o atributo no DOM imediatamente
+                const editor = document.getElementById('note-content');
+                if (editor) {
+                    // contenteditable usa o atributo 'spellcheck' como string "true" ou "false"
+                    editor.setAttribute('spellcheck', this.enableSpellcheck.toString());
+                }
+                this.renderMenu(); // Atualiza UI do menu
+            },
+            changeFontSize(delta) { const note = this.notes.find(n => n.id === this.activeNoteId); if (note) this.updateNote('fontSize', Math.max(14, Math.min(48, (note.fontSize || 22) + delta))); },
             renderSidebar() {
-                const list = document.getElementById('notes-list');
-                const activeTheme = this.getActiveNoteTheme();
-                
-                const headerIconContainer = document.getElementById('sidebar-icon-container');
-                const appIcon = document.getElementById('app-icon');
-                
+                const list = document.getElementById('notes-list'); const activeTheme = this.getActiveNoteTheme();
                 if(activeTheme) {
-                    headerIconContainer.className = `w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-sm ring-4 ring-white transition-all duration-500 bg-gradient-to-br ${activeTheme.gradient} text-white`;
-                    appIcon.textContent = activeTheme.icon;
+                    document.getElementById('sidebar-icon-container').className = `w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-sm ring-4 ring-white transition-all duration-500 bg-gradient-to-br ${activeTheme.gradient} text-white flex-shrink-0`;
+                    document.getElementById('app-icon').textContent = activeTheme.icon;
                 }
-
                 list.innerHTML = '';
-
-                const filtered = this.notes.filter(n => {
-                    const q = this.searchQuery.toLowerCase();
-                    return n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q) || n.tags.some(t => t.includes(q));
-                }).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-
-                if (filtered.length === 0) {
-                    list.innerHTML = `
-                        <div class="text-center py-10 text-slate-300 opacity-60">
-                            <i data-lucide="ghost" class="w-8 h-8 mx-auto mb-2"></i>
-                            <p class="text-sm font-medium">Vazio...</p>
-                        </div>
-                    `;
-                    lucide.createIcons();
-                    return;
-                }
-
+                const filtered = this.notes.filter(n => n.title.toLowerCase().includes(this.searchQuery.toLowerCase()) || n.content.toLowerCase().includes(this.searchQuery.toLowerCase()) || n.tags.some(t => t.includes(this.searchQuery.toLowerCase()))).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+                if (filtered.length === 0) { list.innerHTML = `<div class="text-center py-10 text-slate-300 opacity-60"><i data-lucide="ghost" class="w-8 h-8 mx-auto mb-2"></i><p class="text-sm font-medium">Vazio...</p></div>`; lucide.createIcons(); return; }
                 filtered.forEach(note => {
-                    const theme = coverThemes.find(t => t.id === (note.theme || 'blush'));
-                    const isActive = note.id === this.activeNoteId;
-                    const date = new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'short' }).format(new Date(note.updatedAt));
-
+                    const theme = coverThemes.find(t => t.id === (note.theme || 'blush')); const isActive = note.id === this.activeNoteId;
+                    const plainText = new DOMParser().parseFromString(note.content, 'text/html').body.textContent || '';
                     const div = document.createElement('div');
-                    div.className = `p-4 rounded-3xl cursor-pointer transition-all relative group mb-3 border-2 ${
-                        isActive 
-                        ? `bg-white border-slate-200 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.1)] scale-[1.02]` 
-                        : 'bg-white/50 border-transparent hover:bg-white hover:border-white hover:scale-[1.01]'
-                    }`;
+                    div.className = `p-4 rounded-3xl cursor-pointer transition-all relative group mb-3 border-2 ${isActive ? `bg-white border-slate-200 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.1)] scale-[1.02]` : 'bg-white/50 border-transparent hover:bg-white hover:border-white hover:scale-[1.01]'}`;
                     div.onclick = () => this.selectNote(note.id);
-
-                    div.innerHTML = `
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-sm line-clamp-1 font-ui ${isActive ? 'text-slate-800' : 'text-slate-600'}">
-                                ${theme.icon} ${note.title || 'Sem título'}
-                            </h3>
-                            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${isActive ? 'bg-slate-100 text-slate-500' : 'text-slate-300'}">
-                                ${date}
-                            </span>
-                        </div>
-                        <p class="text-xs line-clamp-2 mb-3 leading-relaxed font-ui ${isActive ? 'text-slate-500' : 'text-slate-400'}">
-                            ${note.content || '...'}
-                        </p>
-                        <div class="flex items-center justify-between">
-                            <div class="flex flex-wrap gap-1">
-                                ${note.tags.slice(0, 2).map(tag => `
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full font-bold text-slate-400 bg-slate-100/50">#${tag}</span>
-                                `).join('')}
-                            </div>
-                            <button onclick="app.deleteNote(event, '${note.id}')" class="p-1.5 rounded-full text-slate-300 hover:text-red-400 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all">
-                                <i data-lucide="trash-2" class="w-3 h-3"></i>
-                            </button>
-                        </div>
-                    `;
+                    div.innerHTML = `<div class="flex justify-between items-start mb-2"><h3 class="font-bold text-sm line-clamp-1 font-ui ${isActive ? 'text-slate-800' : 'text-slate-600'}">${theme.icon} ${note.title || 'Sem título'}</h3><span class="text-[10px] font-bold px-2 py-1 rounded-full ${isActive ? 'bg-slate-100 text-slate-500' : 'text-slate-300'}">${new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'short' }).format(new Date(note.updatedAt))}</span></div><p class="text-xs line-clamp-2 mb-3 leading-relaxed font-ui ${isActive ? 'text-slate-500' : 'text-slate-400'}">${plainText || '...'}</p><div class="flex items-center justify-between"><div class="flex flex-wrap gap-1">${note.tags.slice(0, 2).map(tag => `<span class="text-[10px] px-2 py-0.5 rounded-full font-bold text-slate-400 bg-slate-100/50">#${tag}</span>`).join('')}</div><button onclick="app.deleteNote(event, '${note.id}')" class="p-1.5 rounded-full text-slate-300 hover:text-red-400 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-3 h-3"></i></button></div>`;
                     list.appendChild(div);
                 });
                 lucide.createIcons();
             },
-
             renderMain() {
-                const emptyState = document.getElementById('empty-state');
-                const editorContainer = document.getElementById('editor-container');
                 const note = this.notes.find(n => n.id === this.activeNoteId);
-
-                if (!note) {
-                    emptyState.classList.remove('hidden');
-                    editorContainer.classList.add('hidden');
-                    return;
-                }
-
-                emptyState.classList.add('hidden');
-                editorContainer.classList.remove('hidden');
-
-                // Aplicar Dados
+                if (!note) { document.getElementById('empty-state').classList.remove('hidden'); document.getElementById('editor-container').classList.add('hidden'); return; }
+                document.getElementById('empty-state').classList.add('hidden'); document.getElementById('editor-container').classList.remove('hidden');
+                
                 document.getElementById('note-title').value = note.title;
                 document.getElementById('last-updated').innerText = new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'short', hour:'2-digit', minute:'2-digit' }).format(new Date(note.updatedAt));
                 
-                const theme = coverThemes.find(t => t.id === (note.theme || 'blush'));
-                const paper = paperStyles[note.paper || 'lined'];
-                const font = fontOptions[note.font || 'quicksand'];
-                const fontSize = note.fontSize || 22;
-                const textColor = note.textColor || '#475569';
-
-                // Aplicar Fundo Dinâmico
+                const theme = coverThemes.find(t => t.id === (note.theme || 'blush')); const paper = paperStyles[note.paper || 'lined'];
                 document.body.style.backgroundColor = theme.bodyBg;
                 document.body.style.backgroundImage = `radial-gradient(${theme.patternColor} 1.5px, transparent 1.5px), radial-gradient(${theme.patternColor} 1.5px, transparent 1.5px)`;
-
-                // Icons Toolbar
+                
                 const toolbarIconBg = document.getElementById('toolbar-icon-bg');
                 toolbarIconBg.className = `w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shadow-sm ring-4 ring-white transition-all bg-gradient-to-br ${theme.gradient} text-white`;
                 document.getElementById('toolbar-icon').innerText = theme.icon;
                 document.getElementById('paper-label').innerText = paper.label;
                 document.getElementById('paper-label').className = `text-[10px] font-bold uppercase tracking-wider text-white px-2 py-0.5 rounded-full w-fit bg-slate-400`;
-
-                // Margem
-                const margin = document.getElementById('margin-line');
-                margin.style.display = (note.paper === 'lined' || note.paper === 'pink') ? 'block' : 'none';
-
-                // Content Area
-                const textarea = document.getElementById('note-content');
-                const preview = document.getElementById('note-preview');
-                const tagWrapper = document.getElementById('add-tag-wrapper');
-                const titleInput = document.getElementById('note-title');
-
-                // Aplicar definição do corretor
-                textarea.spellcheck = this.enableSpellcheck;
-
-                // Reset function to clear previous styles
-                const resetBackground = (el) => {
-                    el.style.backgroundImage = '';
-                    el.style.backgroundColor = '';
-                    el.style.backgroundSize = '';
-                    el.style.backgroundAttachment = '';
-                };
-
-                // Aplicar estilos dinâmicos
-                const styles = {
-                    fontFamily: font.family,
-                    fontSize: `${fontSize}px`,
-                    color: textColor,
-                    ...paper.css
-                };
-
-                const applyStyles = (el) => {
-                    resetBackground(el);
-                    Object.assign(el.style, styles);
-                };
                 
-                titleInput.style.fontFamily = font.family;
-                titleInput.style.color = textColor;
-
+                document.getElementById('margin-line').style.display = (note.paper === 'lined' || note.paper === 'pink') ? 'block' : 'none';
+                
+                const editor = document.getElementById('note-content');
+                const titleInput = document.getElementById('note-title');
+                
+                // Força o spellcheck no elemento
+                editor.setAttribute('spellcheck', this.enableSpellcheck.toString());
+                
+                const resetBackground = (el) => { el.style.backgroundImage = ''; el.style.backgroundColor = ''; el.style.backgroundSize = ''; el.style.backgroundAttachment = ''; };
+                const styles = { fontFamily: fontOptions[note.font || 'quicksand'].family, fontSize: `${note.fontSize || 22}px`, color: '#475569', ...paper.css };
+                resetBackground(editor); Object.assign(editor.style, styles);
+                titleInput.style.fontFamily = fontOptions[note.titleFont || note.font || 'quicksand'].family; titleInput.style.color = note.titleColor || '#475569';
+                
                 if (this.viewMode === 'edit') {
-                    textarea.value = note.content;
-                    textarea.classList.remove('hidden');
-                    preview.classList.add('hidden');
-                    tagWrapper.classList.remove('hidden');
-                    titleInput.disabled = false;
-                    applyStyles(textarea);
+                    if (document.activeElement !== editor) editor.innerHTML = note.content || '';
+                    editor.classList.remove('hidden'); document.getElementById('note-preview').classList.add('hidden');
+                    document.getElementById('add-tag-wrapper').classList.remove('hidden'); titleInput.disabled = false;
                     document.getElementById('btn-view-mode').innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
                 } else {
-                    preview.innerText = note.content;
-                    textarea.classList.add('hidden');
-                    preview.classList.remove('hidden');
-                    tagWrapper.classList.add('hidden');
-                    titleInput.disabled = true;
-                    applyStyles(preview);
+                    document.getElementById('note-preview').innerHTML = note.content || '';
+                    editor.classList.add('hidden'); document.getElementById('note-preview').classList.remove('hidden');
+                    document.getElementById('add-tag-wrapper').classList.add('hidden'); titleInput.disabled = true;
+                    resetBackground(document.getElementById('note-preview')); Object.assign(document.getElementById('note-preview').style, styles);
                     document.getElementById('btn-view-mode').innerHTML = '<i data-lucide="pencil" class="w-4 h-4"></i>';
                 }
-
-                this.renderTags();
-                lucide.createIcons();
+                this.renderTags(); lucide.createIcons();
             },
-
             renderTags() {
-                const container = document.getElementById('tags-container');
-                const note = this.notes.find(n => n.id === this.activeNoteId);
-                const theme = coverThemes.find(t => t.id === (note?.theme || 'blush'));
-                
-                container.innerHTML = '';
-                
-                if (note) {
-                    note.tags.forEach(tag => {
-                        const span = document.createElement('span');
-                        span.className = `inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-slate-500 bg-slate-100 cursor-pointer hover:bg-slate-200 transition-colors border-2 border-slate-100 hover:border-slate-300`;
-                        span.innerText = `#${tag}`;
-                        span.onclick = () => this.removeTag(tag);
-                        container.appendChild(span);
-                    });
-                }
+                const container = document.getElementById('tags-container'); const note = this.notes.find(n => n.id === this.activeNoteId); container.innerHTML = '';
+                if (note) note.tags.forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = `inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-slate-500 bg-slate-100 cursor-pointer hover:bg-slate-200 transition-colors border-2 border-slate-100 hover:border-slate-300`;
+                    span.innerText = `#${tag}`; span.onclick = () => this.removeTag(tag); container.appendChild(span);
+                });
             },
-
             renderMenu() {
-                const menu = document.getElementById('appearance-menu');
-                const note = this.notes.find(n => n.id === this.activeNoteId);
-                if (!note) return;
-
-                const sectionTitle = (text) => `
-                    <div class="flex items-center gap-2 mb-3 mt-1">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${text}</span>
-                        <div class="h-px bg-slate-200 flex-1"></div>
-                    </div>
-                `;
-
-                // 1. Temas
-                let html = sectionTitle('Capa & Tema');
-                html += '<div class="flex gap-2 mb-5 overflow-x-auto pb-2 no-scrollbar">';
-                coverThemes.forEach(t => {
-                    const isSelected = note.theme === t.id;
-                    html += `
-                        <button onclick="app.updateNote('theme', '${t.id}')" 
-                            class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-sm transition-all bg-gradient-to-br ${t.gradient} ${isSelected ? 'ring-2 ring-offset-2 ring-slate-400 scale-110' : 'opacity-70 hover:opacity-100 hover:scale-105'} text-white shadow-sm" 
-                            title="${t.name}">
-                            ${t.icon}
-                        </button>
-                    `;
-                });
-                html += '</div>';
-
-                // 2. Papel
-                html += sectionTitle('Papel');
-                html += '<div class="grid grid-cols-2 gap-2 mb-5">';
-                for (const [key, style] of Object.entries(paperStyles)) {
-                    const isSelected = note.paper === key;
-                    html += `
-                        <button onclick="app.updateNote('paper', '${key}')" 
-                            class="text-xs font-bold py-2 px-3 rounded-xl border-2 transition-all flex items-center justify-center gap-2 ${isSelected ? 'border-slate-400 bg-slate-100 text-slate-700' : 'border-slate-100 text-slate-400 hover:border-slate-200 hover:text-slate-500'}">
-                            ${style.label}
-                        </button>
-                    `;
-                }
-                html += '</div>';
-
-                // 3. Fonte Familia
-                html += sectionTitle('Tipografia');
-                html += '<div class="grid grid-cols-2 gap-2 mb-3">';
-                for (const [key, font] of Object.entries(fontOptions)) {
-                    const isSelected = note.font === key;
-                    html += `
-                        <button onclick="app.updateNote('font', '${key}')" 
-                            class="text-sm py-1.5 rounded-lg transition-all ${isSelected ? 'bg-slate-700 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'}" 
-                            style="font-family: ${font.family}">
-                            ${font.name}
-                        </button>
-                    `;
-                }
-                html += '</div>';
-
-                // 4. Cores e Tamanho
-                html += '<div class="flex items-center justify-between gap-4 mb-4">';
+                const menu = document.getElementById('appearance-menu'); const note = this.notes.find(n => n.id === this.activeNoteId); if (!note) return;
+                const colorCircle = (color, active, onClick) => `<button ${onClick} class="w-6 h-6 rounded-full border border-slate-200 shadow-sm transition-transform ${active ? 'ring-2 ring-offset-2 ring-slate-400 scale-110' : 'hover:scale-110'}" style="background-color: ${color}"></button>`;
+                const customPicker = (value, onChange, title) => `<div class="relative w-6 h-6 rounded-full border border-slate-200 shadow-sm overflow-hidden hover:scale-110 transition-transform group" title="${title}"><input type="color" value="${value}" onchange="${onChange}" class="absolute -top-2 -left-2 w-10 h-10 p-0 border-0 opacity-0 cursor-pointer"><div class="w-full h-full bg-[conic-gradient(from_180deg_at_50%_50%,_#FF0000_0deg,_#00FF00_120deg,_#0000FF_240deg,_#FF0000_360deg)]"></div><div class="absolute inset-0 flex items-center justify-center pointer-events-none text-white drop-shadow-md"><i data-lucide="plus" class="w-3 h-3"></i></div></div>`;
                 
-                // Cores
-                html += '<div class="flex gap-1">';
-                textColors.forEach(c => {
-                   const isSelected = (note.textColor || '#475569') === c.color;
-                   html += `
-                        <button onclick="app.updateNote('textColor', '${c.color}')"
-                            class="w-5 h-5 rounded-full border border-slate-100 ${isSelected ? 'ring-2 ring-offset-1 ring-slate-300' : 'hover:scale-110'}"
-                            style="background-color: ${c.color}"
-                            title="${c.name}"
-                        ></button>
-                   `; 
-                });
-                html += '</div>';
-
-                // Tamanho
-                html += `
-                    <div class="flex items-center bg-slate-50 rounded-lg p-1 border border-slate-100">
-                        <button onclick="app.changeFontSize(-2)" class="w-6 h-6 flex items-center justify-center hover:bg-white rounded text-slate-400 hover:text-slate-700"><i data-lucide="minus" class="w-3 h-3"></i></button>
-                        <span class="text-xs font-bold text-slate-600 w-6 text-center">${note.fontSize || 22}</span>
-                        <button onclick="app.changeFontSize(2)" class="w-6 h-6 flex items-center justify-center hover:bg-white rounded text-slate-400 hover:text-slate-700"><i data-lucide="plus" class="w-3 h-3"></i></button>
-                    </div>
-                `;
-                html += '</div>';
-
-                // 5. Corretor
-                html += `
-                    <div class="pt-2 border-t border-slate-100">
-                        <button onclick="app.toggleSpellcheck()" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 transition-colors group">
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="${this.enableSpellcheck ? 'check-circle-2' : 'circle'}" class="w-4 h-4 ${this.enableSpellcheck ? 'text-green-500' : 'text-slate-300'}"></i>
-                                <span class="text-xs font-bold text-slate-500 group-hover:text-slate-700">Corretor Ortográfico</span>
+                // Gerar grid de stickers
+                let stickersHtml = '';
+                Object.entries(stickers).forEach(([category, emojis]) => {
+                    stickersHtml += `
+                        <div class="mb-2">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">${category}</span>
+                            <div class="flex flex-wrap gap-1 mt-1">
+                                ${emojis.map(emoji => `
+                                    <button onmousedown="event.preventDefault(); app.insertSticker('${emoji}')" class="w-8 h-8 flex items-center justify-center text-lg hover:bg-slate-100 rounded-lg transition-colors" title="Inserir ${emoji}">
+                                        ${emoji}
+                                    </button>
+                                `).join('')}
                             </div>
-                            <span class="text-[10px] font-bold ${this.enableSpellcheck ? 'text-green-500 bg-green-50' : 'text-slate-400 bg-slate-100'} px-2 py-0.5 rounded-full">
-                                ${this.enableSpellcheck ? 'LIGADO' : 'DESLIGADO'}
-                            </span>
-                        </button>
-                    </div>
-                `;
+                        </div>
+                    `;
+                });
 
-                menu.innerHTML = html;
-                lucide.createIcons();
+                let html = `
+                    <div class="flex items-center justify-between px-4 pt-4 pb-2 border-b border-slate-100"><h3 class="text-xs font-bold text-rose-500 uppercase tracking-widest flex items-center gap-2"><i data-lucide="palette" class="w-4 h-4"></i> Estilo & Design</h3><button onclick="app.toggleAppearanceMenu()" class="text-slate-300 hover:text-rose-500 transition-colors"><i data-lucide="x" class="w-4 h-4"></i></button></div>
+                    <div class="p-5 space-y-5 overflow-y-auto max-h-[60vh] custom-scrollbar animate-pop">
+                        <div><label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Tema da Capa</label><div class="grid grid-cols-7 gap-1 mb-3">${coverThemes.map(t => `<button onclick="app.updateNote('theme', '${t.id}')" class="w-8 h-8 rounded-full flex items-center justify-center text-xs transition-all bg-gradient-to-br ${t.gradient} ${note.theme === t.id ? 'ring-2 ring-offset-2 ring-rose-400 scale-110' : 'opacity-70 hover:opacity-100 hover:scale-110'} text-white shadow-sm" title="${t.name}">${t.icon}</button>`).join('')}</div><div class="grid grid-cols-2 gap-2">${Object.entries(paperStyles).map(([key, style]) => `<button onclick="app.updateNote('paper', '${key}')" class="text-xs font-bold py-2 px-3 rounded-xl border transition-all flex items-center gap-2 ${note.paper === key ? 'bg-rose-50 border-rose-200 text-rose-600' : 'bg-slate-50 border-transparent text-slate-500 hover:bg-slate-100'}"><span class="w-2 h-2 rounded-full ${note.paper === key ? 'bg-rose-400' : 'bg-slate-300'}"></span>${style.label}</button>`).join('')}</div></div>
+                        <div><label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Cor do Título</label><div class="flex flex-wrap gap-2">${textColors.map(c => colorCircle(c.color, (note.titleColor || '#475569') === c.color, `onclick="app.updateNote('titleColor', '${c.color}')"`)).join('')}${customPicker(note.titleColor || '#000000', "app.updateNote('titleColor', this.value)", "Outra Cor")}</div></div>
+                        
+                        <!-- ADESIVOS -->
+                        <div class="bg-white border border-slate-100 rounded-xl p-3 shadow-sm">
+                            <label class="text-[10px] font-bold text-rose-500 uppercase tracking-widest block mb-2 flex items-center gap-1"><i data-lucide="sticker" class="w-3 h-3"></i> Adesivos & Decoração</label>
+                            <div class="h-32 overflow-y-auto custom-scrollbar pr-1">
+                                ${stickersHtml}
+                            </div>
+                        </div>
+
+                        <div><div class="flex justify-between items-end mb-2"><label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Fonte</label><span class="text-[9px] text-rose-400 bg-rose-50 px-1.5 py-0.5 rounded">Selecionado ou Título</span></div><div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-3"><div class="flex items-center justify-between bg-white rounded-lg p-1 border border-slate-100"><button onclick="app.changeFontSize(-2)" class="p-1.5 hover:bg-slate-50 rounded text-slate-400 hover:text-rose-500"><i data-lucide="minus" class="w-3 h-3"></i></button><span class="text-xs font-bold text-slate-600">${note.fontSize || 22}px</span><button onclick="app.changeFontSize(2)" class="p-1.5 hover:bg-slate-50 rounded text-slate-400 hover:text-rose-500"><i data-lucide="plus" class="w-3 h-3"></i></button></div><div class="grid grid-cols-2 gap-2">${Object.entries(fontOptions).map(([key, font]) => `<button onmousedown="event.preventDefault(); app.setFont('${key}')" class="text-sm py-1.5 px-2 rounded-lg text-left transition-all truncate bg-white border border-slate-200 text-slate-600 hover:border-rose-300 hover:text-rose-600 hover:shadow-sm" style="font-family: ${font.family}">${font.name}</button>`).join('')}</div></div></div>
+                        <div class="pt-2 border-t border-slate-100"><button onclick="app.toggleSpellcheck()" class="w-full flex items-center justify-between py-2 group"><span class="text-xs font-bold text-slate-500 group-hover:text-rose-500">Corretor Ortográfico</span><div class="w-8 h-4 rounded-full relative transition-colors ${this.enableSpellcheck ? 'bg-rose-400' : 'bg-slate-200'}"><div class="absolute top-0.5 left-0.5 bg-white w-3 h-3 rounded-full transition-transform ${this.enableSpellcheck ? 'translate-x-4' : ''}"></div></div></button></div>
+                    </div>`;
+                menu.innerHTML = html; lucide.createIcons();
             },
-
-            getActiveNoteTheme() {
-                const note = this.notes.find(n => n.id === this.activeNoteId);
-                return note ? coverThemes.find(t => t.id === (note.theme || 'blush')) : null;
-            }
+            getActiveNoteTheme() { const note = this.notes.find(n => n.id === this.activeNoteId); return note ? coverThemes.find(t => t.id === (note.theme || 'blush')) : null; }
         };
-
-        // Inicializar
         window.onload = () => app.init();
-
     </script>
 </body>
 </html>
