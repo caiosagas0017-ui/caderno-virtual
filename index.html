@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Google Fonts (Atualizado com fontes mais bonitas) -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Nunito:wght@400;600;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Dancing+Script:wght@400;700&family=Pacifico&family=Indie+Flower&family=Sacramento&family=Satisfy&family=Kalam:wght@300;400;700&family=Amatic+SC:wght@400;700&family=Shadows+Into+Light&family=Gloria+Hallelujah&family=Great+Vibes&family=Handlee&family=Mali:wght@400;500;600&family=Courgette&display=swap" rel="stylesheet">
 
     <style>
@@ -89,6 +89,33 @@
         /* Transição Suave da Sidebar */
         #sidebar {
             transition: width 0.3s ease, padding 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Feedback visual do corretor */
+        .spellcheck-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 41, 59, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .spellcheck-toast.show {
+            opacity: 1;
+            animation: bounceIn 0.3s ease;
+        }
+        @keyframes bounceIn {
+            0% { transform: translateX(-50%) scale(0.8); }
+            50% { transform: translateX(-50%) scale(1.1); }
+            100% { transform: translateX(-50%) scale(1); }
         }
     </style>
 </head>
@@ -203,7 +230,9 @@
 
                     <div class="max-w-3xl mx-auto min-h-full flex flex-col relative z-10">
                         <div class="px-10 md:px-12 pt-10 pb-6">
+                            <!-- Input de Título -->
                             <input type="text" id="note-title" placeholder="Título Mágico..." class="w-full text-4xl font-bold bg-transparent border-none focus:ring-0 placeholder-rose-200 text-slate-700 px-0 outline-none transition-colors duration-300 font-dancing">
+                            
                             <div class="mt-6 flex flex-wrap gap-2 items-center">
                                 <div id="tags-container" class="flex flex-wrap gap-2"></div>
                                 <div id="add-tag-wrapper" class="flex items-center gap-2 group ml-1 bg-white/50 px-3 py-1 rounded-full border border-transparent hover:border-rose-200 transition-all cursor-text" onclick="document.getElementById('tag-input').focus()">
@@ -214,7 +243,14 @@
                         </div>
                         <div class="flex-1 px-10 md:px-12 pb-16 relative">
                             <!-- Div contenteditable com suporte a corretor -->
-                            <div id="note-content" contenteditable="true" spellcheck="true" lang="pt-BR" placeholder="Querido diário... (Cole imagens ou arraste para cá!)" class="w-full h-full min-h-[500px] bg-transparent border-none focus:ring-0 px-0 py-0 tracking-wide leading-9 outline-none transition-colors duration-300 whitespace-pre-wrap"></div>
+                            <!-- lang="pt-BR" é crucial para o spellcheck -->
+                            <div id="note-content" 
+                                contenteditable="true" 
+                                spellcheck="true" 
+                                lang="pt-BR" 
+                                placeholder="Querido diário... (Cole imagens ou arraste para cá!)" 
+                                class="w-full h-full min-h-[500px] bg-transparent border-none focus:ring-0 px-0 py-0 tracking-wide leading-9 outline-none transition-colors duration-300 whitespace-pre-wrap"></div>
+                            
                             <div id="note-preview" class="hidden prose prose-lg prose-pink max-w-none whitespace-pre-wrap min-h-[500px]"></div>
                         </div>
                     </div>
@@ -222,6 +258,9 @@
             </div>
         </div>
     </main>
+    
+    <!-- Toast de Feedback do Corretor -->
+    <div id="spellcheck-toast" class="spellcheck-toast">Corretor Ortográfico Ativado</div>
 
     <div id="delete-modal" class="hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center animate-pop">
         <div class="bg-white p-6 rounded-3xl shadow-2xl max-w-sm w-full mx-4 text-center border-4 border-rose-100">
@@ -288,6 +327,8 @@
         ];
 
         const stickers = {
+            status: ['✅', '✔️', '☑️', '🆗', '👍', '❌', '❎', '🚫', '⚠️', '❗', '❓', '💯'],
+            emocoes: ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '🥴', '😵', '🤯', '🤠', '🥳', '😎', '🤓', '🧐', '😕', '😟', '🙁', '☹️', '😮', '😯', '😲', '😳', '🥺', '😦', '😧', '😨', '😰', '😥', '😢', '😭', '😱', '😖', '😣', '😞', '😓', '😩', '😫', '🥱', '😤', '😡', '😠', '🤬', '😈', '👿'],
             botanica: ['🌸', '🌼', '🌻', '🌹', '🌷', '💐', '🌺', '🍃', '🏵️', '💮', '🪷', '🌾', '🌿', '🌱', '🪴', '🍁', '🍂', '🍄'],
             ceu: ['⭐', '🌟', '✨', '🌙', '☀️', '⛅', '🌈', '☁️', '🪐', '☄️', '🌥️', '🌩️', '🌌', '⚡', '❄️'],
             fofura: ['💖', '💜', '💌', '🎀', '🧸', '🎈', '🎨', '🎉', '🩰', '🦢', '🕯️', '🪞', '🧵', '🧶', '🤍', '🍬', '🛁', '🫧'],
@@ -362,12 +403,27 @@
                 
                 document.getElementById('tag-input').addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.value.trim()) { this.addTag(e.target.value.trim()); e.target.value = ''; } });
                 
+                // Context Menu Logic
                 document.addEventListener('contextmenu', (e) => {
                     const editor = document.getElementById('note-content');
                     const titleInput = document.getElementById('note-title');
-                    if (editor.contains(e.target)) { e.preventDefault(); this.contextMenuTarget = 'content'; this.showContextMenu(e.pageX, e.pageY); }
-                    else if (titleInput.contains(e.target)) { e.preventDefault(); this.contextMenuTarget = 'title'; this.showContextMenu(e.pageX, e.pageY); }
+                    const sel = window.getSelection();
+                    
+                    if (editor.contains(e.target)) {
+                        // Se houver texto selecionado, mostra o menu de cores
+                        if (sel.toString().length > 0) {
+                            e.preventDefault();
+                            this.contextMenuTarget = 'content';
+                            this.showContextMenu(e.pageX, e.pageY);
+                        }
+                        // Se NÃO houver seleção (clique numa palavra para corrigir), deixa o menu nativo aparecer
+                    } else if (titleInput.contains(e.target)) {
+                        e.preventDefault();
+                        this.contextMenuTarget = 'title';
+                        this.showContextMenu(e.pageX, e.pageY);
+                    }
                 });
+
                 document.addEventListener('click', (e) => { if (!document.getElementById('context-menu').contains(e.target)) { this.hideContextMenu(); } });
                 
                 this.renderSidebar(); this.renderMain(); this.renderMenu(); this.renderContextMenu(); lucide.createIcons();
@@ -582,8 +638,22 @@
                 
                 const editor = document.getElementById('note-content');
                 if (editor) {
-                    editor.spellcheck = this.enableSpellcheck;
                     editor.setAttribute('spellcheck', this.enableSpellcheck.toString());
+                    
+                    // Truque para forçar o navegador a reprocessar o spellcheck
+                    const tempHtml = editor.innerHTML;
+                    editor.innerHTML = '';
+                    setTimeout(() => {
+                        editor.innerHTML = tempHtml;
+                        editor.focus();
+                        
+                        // Mostrar Toast
+                        const toast = document.getElementById('spellcheck-toast');
+                        toast.innerText = this.enableSpellcheck ? 'Corretor Ativado' : 'Corretor Desativado';
+                        toast.classList.add('show');
+                        setTimeout(() => toast.classList.remove('show'), 2000);
+                        
+                    }, 10);
                 }
                 this.renderMenu(); 
             },
@@ -632,9 +702,11 @@
                 const editor = document.getElementById('note-content');
                 const titleInput = document.getElementById('note-title');
                 
-                // Força o spellcheck no elemento
+                // Força o spellcheck no elemento e idioma
+                editor.contentEditable = true;
                 editor.spellcheck = this.enableSpellcheck;
                 editor.setAttribute('spellcheck', this.enableSpellcheck.toString());
+                editor.lang = 'pt-BR'; // Assegura português do Brasil
                 
                 const resetBackground = (el) => { el.style.backgroundImage = ''; el.style.backgroundColor = ''; el.style.backgroundSize = ''; el.style.backgroundAttachment = ''; };
                 const styles = { fontFamily: fontOptions[note.font || 'quicksand'].family, fontSize: `${note.fontSize || 22}px`, color: '#475569', ...paper.css };
