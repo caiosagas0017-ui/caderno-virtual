@@ -91,7 +91,7 @@
             transition: width 0.3s ease, padding 0.3s ease, transform 0.3s ease;
         }
 
-        /* Feedback visual do corretor */
+        /* Toast Feedback */
         .spellcheck-toast {
             position: fixed;
             bottom: 24px;
@@ -285,6 +285,7 @@
                 <i data-lucide="eraser" class="w-3 h-3"></i> Limpar Cor
             </button>
         </div>
+        <div class="mt-1 text-center text-[9px] text-slate-300 font-bold">Shift + Click Direito para menu nativo</div>
     </div>
 
     <script>
@@ -327,7 +328,7 @@
         ];
 
         const stickers = {
-            status: ['✅', '✔️', '☑️', '🆗', '👍', '❌', '❎', '🚫', '⚠️', '❗', '❓', '💯'],
+            tarefas: ['✅', '✔️', '☑️', '🆗', '👍', '❌', '❎', '🚫', '⚠️', '❗', '❓', '💯', '🟩', '🟥'],
             emocoes: ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '🥴', '😵', '🤯', '🤠', '🥳', '😎', '🤓', '🧐', '😕', '😟', '🙁', '☹️', '😮', '😯', '😲', '😳', '🥺', '😦', '😧', '😨', '😰', '😥', '😢', '😭', '😱', '😖', '😣', '😞', '😓', '😩', '😫', '🥱', '😤', '😡', '😠', '🤬', '😈', '👿'],
             botanica: ['🌸', '🌼', '🌻', '🌹', '🌷', '💐', '🌺', '🍃', '🏵️', '💮', '🪷', '🌾', '🌿', '🌱', '🪴', '🍁', '🍂', '🍄'],
             ceu: ['⭐', '🌟', '✨', '🌙', '☀️', '⛅', '🌈', '☁️', '🪐', '☄️', '🌥️', '🌩️', '🌌', '⚡', '❄️'],
@@ -410,17 +411,22 @@
                     const sel = window.getSelection();
                     
                     if (editor.contains(e.target)) {
-                        // Se houver texto selecionado, mostra o menu de cores
-                        if (sel.toString().length > 0) {
+                        // Lógica Inteligente para Corretor:
+                        // Se não houver seleção (clicou para corrigir), deixa passar o menu nativo (não chama preventDefault)
+                        // Se houver seleção (arrastou mouse), mostra o menu de personalização
+                        // Se carregar Shift, mostra sempre o nativo
+                        if (!e.shiftKey && sel.toString().length > 0) {
                             e.preventDefault();
                             this.contextMenuTarget = 'content';
                             this.showContextMenu(e.pageX, e.pageY);
                         }
-                        // Se NÃO houver seleção (clique numa palavra para corrigir), deixa o menu nativo aparecer
                     } else if (titleInput.contains(e.target)) {
-                        e.preventDefault();
-                        this.contextMenuTarget = 'title';
-                        this.showContextMenu(e.pageX, e.pageY);
+                         // No título, se tiver seleção, mostra cores. Se não, nativo.
+                         if (!e.shiftKey && (titleInput.selectionEnd - titleInput.selectionStart > 0)) {
+                            e.preventDefault();
+                            this.contextMenuTarget = 'title';
+                            this.showContextMenu(e.pageX, e.pageY);
+                         }
                     }
                 });
 
